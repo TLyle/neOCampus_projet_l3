@@ -1,54 +1,62 @@
--- Adminer 4.3.1 MySQL dump
+-- log adminer
+-- user : root
+-- mdp : _
 
-SET NAMES utf8;
-SET time_zone = '+00:00';
-SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+DROP TABLE IF EXISTS ticket;
+CREATE TABLE ticket (
+	IdTicket integer,
+	Titre VARCHAR(100),
+	Groupe VARCHAR(10),
+    constraint pk_Ticket primary key(idTicket),
+    constraint fk_Groupe foreign key(Groupe)
+		references groupe(Nom)
+        on delete cascade
+);
 
-DROP TABLE IF EXISTS `groupe`;
-CREATE TABLE `groupe` (
-  `Nom` varchar(10) NOT NULL,
-  `Users` set('100') DEFAULT NULL,
-  `Tickets` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Nom`),
-  KEY `fk_ticket` (`Tickets`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS groupe;
+CREATE TABLE groupe (
+	Nom VARCHAR(10),
+    constraint pk_Groupe primary key(Nom)
+);
 
+DROP TABLE IF EXISTS utilisateur;
+CREATE TABLE utilisateur (
+	Username VARCHAR(8),
+	Mdp VARCHAR(50),
+	Type VARCHAR(15), 
+	Groupe VARCHAR(10),
+	Nom VARCHAR(50),
+	Prenom VARCHAR(50),
+	Mail VARCHAR(100),
+	CONSTRAINT pk_Utilisateur PRIMARY KEY(Username),
+	CONSTRAINT fk_Groupe FOREIGN KEY(Groupe)
+		REFERENCES groupe(Nom)
+		on delete cascade,
+	CONSTRAINT ck_type CHECK (type IN ('Etudiant','Professeur','Administrateur'))
+);
 
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message` (
-  `IdMessage` int(11) NOT NULL,
-  `Ticket` int(11) NOT NULL,
-  `Etat` varchar(10) NOT NULL,
-  `Texte` varchar(500) NOT NULL,
-  PRIMARY KEY (`IdMessage`),
-  KEY `fk_Ticket` (`Ticket`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS message;
+CREATE TABLE message (
+	IdMessage INTEGER,
+	Ticket INTEGER,
+	Etat VARCHAR(10),
+	Texte VARCHAR(500),
+    constraint pk_Message primary key(IdMessage),
+    constraint fk_Ticket foreign key(Ticket)
+		references ticket(idTicket)
+        on delete cascade,
+	constraint ck_etat check (Etat in ('Lu','Recu','Envoye','Pas envoye'))
+);
 
+insert into groupe values ('TDA1');
+insert into groupe values ('TDA2');
+insert into groupe values ('TDA3');
+insert into groupe values ('TDA4');
 
-DROP TABLE IF EXISTS `ticket`;
-CREATE TABLE `ticket` (
-  `IdTicket` int(11) NOT NULL,
-  `Titre` varchar(100) NOT NULL,
-  `Requete` set('100') NOT NULL,
-  `Groupe` varchar(10) NOT NULL,
-  PRIMARY KEY (`IdTicket`),
-  KEY `fk_Groupe` (`Groupe`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+insert into utilisateur values ('thomas', 'oui', 'Etudiant', 'TDA2', 'Lyle', 'Thomas', 'qqch@autrechose.fr');
+insert into utilisateur values ('leo', 'yes', 'Etudiant', 'TDA2', 'Laugier', 'Leo', 'qqch@autrechose.fr');
+insert into utilisateur values ('jules', 'si', 'Etudiant', 'TDA2', 'Lehodey', 'Jules', 'qqch@autrechose.fr');
 
+insert into ticket values ('1', 'test', 'TDA2');
 
-DROP TABLE IF EXISTS `utilisateur`;
-CREATE TABLE `utilisateur` (
-  `Username` varchar(8) NOT NULL,
-  `Mdp` varchar(50) NOT NULL,
-  `Type` varchar(15) NOT NULL,
-  `Groupe` set('10') DEFAULT NULL,
-  `Nom` varchar(50) NOT NULL,
-  `Prenom` varchar(50) NOT NULL,
-  `Mail` varchar(100) NOT NULL,
-  PRIMARY KEY (`Username`),
-  KEY `fk_Groupe` (`Groupe`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
--- 2017-12-13 13:24:59
+insert into message values ('1', '1', 'Recu', 'Ceci est un test');
