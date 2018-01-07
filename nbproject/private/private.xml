@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Client/Client.java</file>
-            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Serveur/Serveur.java</file>
-            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Serveur/Commubdd.java</file>
-            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/base_de_donnees/base_projet.sql</file>
+            <file>file:/D:/Doc_Ash/Fac/ProjetS5/neOCampus_projet_l3/src/Client/Acceuil_Client.java</file>
+            <file>file:/D:/Doc_Ash/Fac/ProjetS5/neOCampus_projet_l3/src/Client/Creation_compte.java</file>
+            <file>file:/D:/Doc_Ash/Fac/ProjetS5/neOCampus_projet_l3/src/Client/Mdp_Oublie.java</file>
+            <file>file:/D:/Doc_Ash/Fac/ProjetS5/neOCampus_projet_l3/src/Client/Authentification.java</file>
         </group>
     </open-files>
 </project-private>

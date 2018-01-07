@@ -5,6 +5,10 @@
  */
 package Client;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+
 /**
  *
  * @author jules
@@ -17,7 +21,15 @@ public class Mdp_Oublie extends javax.swing.JFrame {
     public Mdp_Oublie() {
         initComponents();
     }
-
+    private Dimension tailleEcranAdapté(){
+        //get local graphics environment
+        GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
+        //get maximum window bounds
+        Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
+        //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = new Dimension((int)rectangle.getWidth(),(int)rectangle.getHeight());
+        return dim;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,6 +46,7 @@ public class Mdp_Oublie extends javax.swing.JFrame {
         Retour = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(tailleEcranAdapté());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -47,7 +60,7 @@ public class Mdp_Oublie extends javax.swing.JFrame {
                 Envoie_mailActionPerformed(evt);
             }
         });
-        jPanel1.add(Envoie_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 260, 40));
+        jPanel1.add(Envoie_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 290, 40));
 
         Retour.setText("Retour");
         Retour.addActionListener(new java.awt.event.ActionListener() {
@@ -78,10 +91,12 @@ public class Mdp_Oublie extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Envoie_mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Envoie_mailActionPerformed
-        // TODO add your handling code here:
+        new Authentification().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_Envoie_mailActionPerformed
 
     private void RetourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetourActionPerformed
+        new Authentification().setVisible(true);
         this.dispose(); // fermeture de la fenetre
     }//GEN-LAST:event_RetourActionPerformed
 

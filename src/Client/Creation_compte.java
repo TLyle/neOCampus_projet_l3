@@ -5,6 +5,10 @@
  */
 package Client;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+
 /**
  *
  * @author jules
@@ -17,7 +21,15 @@ public class Creation_compte extends javax.swing.JFrame {
     public Creation_compte() {
         initComponents();
     }
-
+    private Dimension tailleEcranAdapté(){
+        //get local graphics environment
+        GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
+        //get maximum window bounds
+        Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
+        //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = new Dimension((int)rectangle.getWidth(),(int)rectangle.getHeight());
+        return dim;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,6 +52,7 @@ public class Creation_compte extends javax.swing.JFrame {
         Retour = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(tailleEcranAdapté());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -66,7 +79,12 @@ public class Creation_compte extends javax.swing.JFrame {
         jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 290, -1));
 
         jButton1.setText("Création du compte");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, 130, 50));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 180, 50));
 
         Retour.setText("Retour");
         Retour.addActionListener(new java.awt.event.ActionListener() {
@@ -101,8 +119,14 @@ public class Creation_compte extends javax.swing.JFrame {
     }//GEN-LAST:event_Entree_nom_utilisateurActionPerformed
 
     private void RetourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetourActionPerformed
+        new Authentification().setVisible(true);
         this.dispose(); // fermeture de la fenetre
     }//GEN-LAST:event_RetourActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new Authentification().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

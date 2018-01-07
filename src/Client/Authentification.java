@@ -5,6 +5,10 @@
  */
 package Client;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+
 /**
  *
  * @author jules
@@ -17,7 +21,17 @@ public class Authentification extends javax.swing.JFrame {
     public Authentification() {
         initComponents();
     }
-
+    
+    private Dimension tailleEcranAdapté(){
+        //get local graphics environment
+        GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
+        //get maximum window bounds
+        Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
+        //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = new Dimension((int)rectangle.getWidth(),(int)rectangle.getHeight());
+        return dim;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,44 +41,49 @@ public class Authentification extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        Conteneur_central = new javax.swing.JPanel();
+        Mot_de_passe = new javax.swing.JLabel();
+        Entree_mdp = new javax.swing.JTextField();
+        Bouton_creation_compte = new javax.swing.JButton();
+        Bouton_connexion = new javax.swing.JButton();
+        Nom_utilisateur = new javax.swing.JLabel();
         Entree_Nom_Utilisateur = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        Bouton_mdp_oublié = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(tailleEcranAdapté());
 
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Conteneur_central.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setText("Mot de passe");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
+        Mot_de_passe.setText("Mot de passe");
+        Conteneur_central.add(Mot_de_passe, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
 
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        Entree_mdp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Entree_mdp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                Entree_mdpActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 140, 210, -1));
+        Conteneur_central.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 140, 210, -1));
 
-        jButton1.setText("Creer un compte");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Bouton_creation_compte.setText("Créer un compte");
+        Bouton_creation_compte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                Bouton_creation_compteActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 120, 40));
+        Conteneur_central.add(Bouton_creation_compte, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 120, 40));
 
-        jButton2.setText("Connexion");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 120, 40));
+        Bouton_connexion.setText("Connexion");
+        Bouton_connexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_connexionActionPerformed(evt);
+            }
+        });
+        Conteneur_central.add(Bouton_connexion, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 120, 40));
 
-        jLabel1.setText("Nom d'utilisateur");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, -1, -1));
+        Nom_utilisateur.setText("Nom d'utilisateur");
+        Conteneur_central.add(Nom_utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, -1, -1));
 
         Entree_Nom_Utilisateur.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Entree_Nom_Utilisateur.addActionListener(new java.awt.event.ActionListener() {
@@ -72,29 +91,32 @@ public class Authentification extends javax.swing.JFrame {
                 Entree_Nom_UtilisateurActionPerformed(evt);
             }
         });
-        jPanel2.add(Entree_Nom_Utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 209, -1));
+        Conteneur_central.add(Entree_Nom_Utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 209, -1));
 
-        jButton3.setText("Mot de passe oublie");
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 140, -1));
+        Bouton_mdp_oublié.setText("Mot de passe oublié");
+        Bouton_mdp_oublié.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_mdp_oubliéActionPerformed(evt);
+            }
+        });
+        Conteneur_central.add(Bouton_mdp_oublié, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 140, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(282, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(282, Short.MAX_VALUE))
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(301, Short.MAX_VALUE)
+                .addComponent(Conteneur_central, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(301, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(193, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(193, Short.MAX_VALUE))
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(163, Short.MAX_VALUE)
+                .addComponent(Conteneur_central, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(164, Short.MAX_VALUE))
         );
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -103,13 +125,24 @@ public class Authentification extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_Entree_Nom_UtilisateurActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void Entree_mdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_Entree_mdpActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void Bouton_creation_compteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creation_compteActionPerformed
+        new Creation_compte().setVisible(true); // lien vers nouvelle fenetre
+        this.dispose();
+    }//GEN-LAST:event_Bouton_creation_compteActionPerformed
+
+    private void Bouton_mdp_oubliéActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_mdp_oubliéActionPerformed
+        new Mdp_Oublie().setVisible(true); // lien vers nouvelle fenetre
+        this.dispose();
+    }//GEN-LAST:event_Bouton_mdp_oubliéActionPerformed
+
+    private void Bouton_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_connexionActionPerformed
+        new Acceuil_Client().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Bouton_connexionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,14 +180,13 @@ public class Authentification extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Bouton_connexion;
+    private javax.swing.JButton Bouton_creation_compte;
+    private javax.swing.JButton Bouton_mdp_oublié;
+    private javax.swing.JPanel Conteneur_central;
     private javax.swing.JTextField Entree_Nom_Utilisateur;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField Entree_mdp;
+    private javax.swing.JLabel Mot_de_passe;
+    private javax.swing.JLabel Nom_utilisateur;
     // End of variables declaration//GEN-END:variables
 }
