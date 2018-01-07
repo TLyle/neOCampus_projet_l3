@@ -2,17 +2,21 @@ package Client;
 
 import java.net.*;
 import java.util.Scanner;
+
+import objet.Utilisateur;
+
 import java.io.*;
 
 public class Connexion implements Runnable {
 
 	private Socket socket = null;
-	public static Thread t2;
-	public static String login = null, pass = null, message1 = null, message2 = null, message3 = null;
+	public static Thread th;
+	public static String login, pass;
 	private PrintWriter out = null;
 	private BufferedReader in = null;
 	private Scanner sc = null;
 	private boolean connect = false;
+	public Utilisateur user;	
 	
 	public Connexion(Socket s){
 		
@@ -40,7 +44,6 @@ public class Connexion implements Runnable {
 			out.flush();
 			
 			if(in.readLine().equals("connecte")){
-				
 				System.out.println("Je suis connecté "); 
 				connect = true;
 			} else {
@@ -48,8 +51,8 @@ public class Connexion implements Runnable {
 			}
 		}
 			
-			t2 = new Thread(new Chat_ClientServeur(socket));
-			t2.start();
+			th = new Thread(new toServer(socket));
+			th.start();
 		
 		} catch (IOException e) {
 			
