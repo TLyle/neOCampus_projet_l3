@@ -1,7 +1,7 @@
 package Serveur;
 
 import java.net.*;
-import java.util.Scanner;
+import java.sql.SQLException;
 import java.io.*;
 
 public class Authentification implements Runnable {
@@ -17,7 +17,9 @@ public class Authentification implements Runnable {
 		 socket = s;
 		}
 	public void run() {
-	
+		
+		Commubdd bdd = new Commubdd();
+		
 		try {
 			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -34,7 +36,7 @@ public class Authentification implements Runnable {
 				out.flush();
 				pass = in.readLine();
 	
-				if(isValid(login, pass)){
+				if(bdd.verif_user(login, pass)){
 					
 					out.println("connecte");
 					System.out.println(login +" vient de se connecter ");
@@ -43,35 +45,19 @@ public class Authentification implements Runnable {
 				}
 				else {out.println("erreur"); out.flush();}
 			}
-			t2 = new Thread(new Chat_ClientServeur(socket,login));
+			t2 = new Thread(new toClient(socket,login));
 			t2.start();
 			
 		} catch (IOException e) {
 			
 			System.err.println(login+" ne répond pas !");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
-	private static boolean isValid(String login, String pass) {
-		
-		
-		boolean connexion = false;
-		try {
-			Scanner sc = new Scanner(new File("identifiant.txt"));
-			
-			
-			while(sc.hasNext()){
-				if(sc.nextLine().equals(login+" "+pass)){
-              	  connexion=true;
-				  break;
-				}
-             }
-			
-		} catch (FileNotFoundException e) {	
-			System.err.println("Le fichier n'existe pas !");
-		}
-	return connexion;
-		
-	}
-
 }
