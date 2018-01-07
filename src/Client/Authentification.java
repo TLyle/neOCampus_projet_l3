@@ -43,12 +43,12 @@ public class Authentification extends javax.swing.JFrame {
 
         Conteneur_central = new javax.swing.JPanel();
         Mot_de_passe = new javax.swing.JLabel();
-        Entree_mdp = new javax.swing.JTextField();
         Bouton_creation_compte = new javax.swing.JButton();
         Bouton_connexion = new javax.swing.JButton();
         Nom_utilisateur = new javax.swing.JLabel();
         Entree_Nom_Utilisateur = new javax.swing.JTextField();
         Bouton_mdp_oublié = new javax.swing.JButton();
+        jPasswordField1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -57,14 +57,6 @@ public class Authentification extends javax.swing.JFrame {
 
         Mot_de_passe.setText("Mot de passe");
         Conteneur_central.add(Mot_de_passe, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
-
-        Entree_mdp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        Entree_mdp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Entree_mdpActionPerformed(evt);
-            }
-        });
-        Conteneur_central.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 140, 210, -1));
 
         Bouton_creation_compte.setText("Créer un compte");
         Bouton_creation_compte.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +93,9 @@ public class Authentification extends javax.swing.JFrame {
         });
         Conteneur_central.add(Bouton_mdp_oublié, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 140, -1));
 
+        jPasswordField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Conteneur_central.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 210, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,10 +119,6 @@ public class Authentification extends javax.swing.JFrame {
     private void Entree_Nom_UtilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_Nom_UtilisateurActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Entree_Nom_UtilisateurActionPerformed
-
-    private void Entree_mdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Entree_mdpActionPerformed
 
     private void Bouton_creation_compteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creation_compteActionPerformed
         new Creation_compte().setVisible(true); // lien vers nouvelle fenetre
@@ -185,8 +176,8 @@ public class Authentification extends javax.swing.JFrame {
     private javax.swing.JButton Bouton_mdp_oublié;
     private javax.swing.JPanel Conteneur_central;
     private javax.swing.JTextField Entree_Nom_Utilisateur;
-    private javax.swing.JTextField Entree_mdp;
     private javax.swing.JLabel Mot_de_passe;
     private javax.swing.JLabel Nom_utilisateur;
+    private javax.swing.JPasswordField jPasswordField1;
     // End of variables declaration//GEN-END:variables
 }

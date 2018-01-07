@@ -43,13 +43,13 @@ public class Creation_compte extends javax.swing.JFrame {
         Nom_utilisateur = new javax.swing.JLabel();
         Entree_nom_utilisateur = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         Retour = new javax.swing.JButton();
+        Entree_mdp_verification = new javax.swing.JPasswordField();
+        Entree_mdp = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -68,11 +68,9 @@ public class Creation_compte extends javax.swing.JFrame {
 
         jLabel1.setText("Mot de passe :");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 290, -1));
 
         jLabel2.setText("Réécrire le mot de passe :");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 290, -1));
 
         jLabel3.setText("Adresse mail :");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
@@ -93,6 +91,8 @@ public class Creation_compte extends javax.swing.JFrame {
             }
         });
         jPanel1.add(Retour, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel1.add(Entree_mdp_verification, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 290, -1));
+        jPanel1.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 290, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,6 +164,8 @@ public class Creation_compte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField Entree_mdp;
+    private javax.swing.JPasswordField Entree_mdp_verification;
     private javax.swing.JTextField Entree_nom_utilisateur;
     private javax.swing.JLabel Nom_utilisateur;
     private javax.swing.JButton Retour;
@@ -172,8 +174,6 @@ public class Creation_compte extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,8 +6,16 @@
 package Client;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
 
 /**
  *
@@ -18,8 +26,16 @@ public class Acceuil_Client extends javax.swing.JFrame {
     /**
      * Creates new form Acceuil_Client
      */
+    ArrayList<Integer> listeDeTickets; //TODO remplacer Integer par Ticket
+    
     public Acceuil_Client() {
         initComponents();
+        listeDeTickets = new ArrayList<>();
+        //TODO remplacer la mise a jour statique par une mise à jour par base de donnée
+        for (int i = 0; i < 10; i++){
+            int ajout = i;
+            listeDeTickets.add(ajout);  
+        }
     }
     private Dimension tailleEcranAdapté(){
         //get local graphics environment
@@ -62,6 +78,7 @@ public class Acceuil_Client extends javax.swing.JFrame {
         Bouton_recherche = new javax.swing.JButton();
         Bouton_actualiser = new javax.swing.JButton();
         Bouton_creer_ticket = new javax.swing.JButton();
+        Conteneur_Tickets = new javax.swing.JPanel();
         jPanel_Profil = new javax.swing.JPanel();
         jPanel_informations = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -88,23 +105,32 @@ public class Acceuil_Client extends javax.swing.JFrame {
         Conteneur_boutons_ticket.add(Bouton_recherche);
 
         Bouton_actualiser.setText("Actualiser");
+        Bouton_actualiser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_actualiserActionPerformed(evt);
+            }
+        });
         Conteneur_boutons_ticket.add(Bouton_actualiser);
 
         Bouton_creer_ticket.setText("Créer un ticket");
         Bouton_creer_ticket.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Conteneur_boutons_ticket.add(Bouton_creer_ticket);
 
+        Conteneur_Tickets.setLayout(new java.awt.GridLayout(10, 1));
+
         javax.swing.GroupLayout jPanel_TicketLayout = new javax.swing.GroupLayout(jPanel_Ticket);
         jPanel_Ticket.setLayout(jPanel_TicketLayout);
         jPanel_TicketLayout.setHorizontalGroup(
             jPanel_TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Conteneur_boutons_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+            .addComponent(Conteneur_boutons_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+            .addComponent(Conteneur_Tickets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel_TicketLayout.setVerticalGroup(
             jPanel_TicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_TicketLayout.createSequentialGroup()
                 .addComponent(Conteneur_boutons_ticket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 414, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(Conteneur_Tickets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel_Ticket);
@@ -116,7 +142,7 @@ public class Acceuil_Client extends javax.swing.JFrame {
         jPanel_informations.setLayout(jPanel_informationsLayout);
         jPanel_informationsLayout.setHorizontalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 476, Short.MAX_VALUE)
         );
         jPanel_informationsLayout.setVerticalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,13 +205,29 @@ public class Acceuil_Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Bouton_rechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_rechercheActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_Bouton_rechercheActionPerformed
 
     private void Bouton_deconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_deconnectionActionPerformed
         new Authentification().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Bouton_deconnectionActionPerformed
+
+    private void Bouton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_actualiserActionPerformed
+        //Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
+        for(int i = 0; i<10; i++) {
+            JPanel p = new JPanel(new FlowLayout());
+            JButton b;
+            b = new JButton("Acceder a la conversation "+((Integer) i).toString());
+            //b.addActionListener(...); 
+
+            p.add(b);
+            p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
+
+            Conteneur_Tickets.add(p);
+        }
+        Conteneur_Tickets.updateUI(); // rafraichi le panel
+    }//GEN-LAST:event_Bouton_actualiserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,6 +269,7 @@ public class Acceuil_Client extends javax.swing.JFrame {
     private javax.swing.JButton Bouton_creer_ticket;
     private javax.swing.JButton Bouton_deconnection;
     private javax.swing.JButton Bouton_recherche;
+    private javax.swing.JPanel Conteneur_Tickets;
     private javax.swing.JPanel Conteneur_boutons_ticket;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
