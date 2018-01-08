@@ -17,7 +17,8 @@ public class Commubdd {
 		
 		Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
 		Statement state = conn.createStatement();
-		ResultSet result = state.executeQuery("SELECT * FROM utilisateur");
+                String com = "SELECT * FROM utilisateur";
+		ResultSet result = state.executeQuery(com);
 		Boolean retour = false;
 		
 		while(result.next() && !retour) {
