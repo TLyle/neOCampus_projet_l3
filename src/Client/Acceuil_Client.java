@@ -153,7 +153,6 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
                 .addGap(78, 78, 78)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(232, Short.MAX_VALUE))
-            .addGap(0, 476, Short.MAX_VALUE)
         );
         jPanel_informationsLayout.setVerticalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

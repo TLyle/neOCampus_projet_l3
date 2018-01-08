@@ -23,6 +23,19 @@ public class Connexion implements Runnable {
 		socket = s;
 	}
 	
+        public boolean authen(String username, String password) throws IOException{
+            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));	
+                        
+            out.println(username);
+            out.flush();
+            
+            out.println(password);
+            out.flush();
+            
+            return (in.readLine().equals("connecte"));
+        }
+        
 	public void run() {
 		
 		try {
@@ -44,7 +57,7 @@ public class Connexion implements Runnable {
 			out.flush();
 			
 			if(in.readLine().equals("connecte")){
-				System.out.println("Je suis connecté "); 
+				System.out.println("Je suis connectï¿½ "); 
 				connect = true;
 			} else {
 				System.err.println("Vos informations sont incorrectes "); 
@@ -56,7 +69,7 @@ public class Connexion implements Runnable {
 		
 		} catch (IOException e) {
 			
-			System.err.println("Le serveur ne répond plus ");
+			System.err.println("Le serveur ne rï¿½pond plus ");
 		}
 	}
 
