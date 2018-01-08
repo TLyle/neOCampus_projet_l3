@@ -14,12 +14,13 @@ import java.awt.Rectangle;
  * @author jules
  */
 public class Mdp_Oublie extends javax.swing.JFrame {
-
+    String mail;
     /**
      * Creates new form Mdp_Oublie
      */
     public Mdp_Oublie() {
         initComponents();
+        mail = "";
     }
     private Dimension tailleEcranAdapté(){
         //get local graphics environment
@@ -52,6 +53,12 @@ public class Mdp_Oublie extends javax.swing.JFrame {
 
         Instruction_1.setText("Entrez l'adresse mail liée à ce compte :");
         jPanel1.add(Instruction_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
+
+        Entree_mail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_mailActionPerformed(evt);
+            }
+        });
         jPanel1.add(Entree_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 330, -1));
 
         Envoie_mail.setText("Envoyer mon mot de passe à cette adresse");
@@ -99,6 +106,10 @@ public class Mdp_Oublie extends javax.swing.JFrame {
         new Authentification().setVisible(true);
         this.dispose(); // fermeture de la fenetre
     }//GEN-LAST:event_RetourActionPerformed
+
+    private void Entree_mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mailActionPerformed
+        mail = Entree_mail.getText();
+    }//GEN-LAST:event_Entree_mailActionPerformed
 
     /**
      * @param args the command line arguments

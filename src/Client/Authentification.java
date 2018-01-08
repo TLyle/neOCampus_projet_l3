@@ -14,12 +14,16 @@ import java.awt.Rectangle;
  * @author jules
  */
 public class Authentification extends javax.swing.JFrame {
-
+    
+    String username;
+    String password;
     /**
      * Creates new form Authentification
      */
     public Authentification() {
         initComponents();
+        username = "";
+        password="";
     }
     
     private Dimension tailleEcranAdapté(){
@@ -48,7 +52,7 @@ public class Authentification extends javax.swing.JFrame {
         Nom_utilisateur = new javax.swing.JLabel();
         Entree_Nom_Utilisateur = new javax.swing.JTextField();
         Bouton_mdp_oublié = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        Entree_mdp = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -93,17 +97,22 @@ public class Authentification extends javax.swing.JFrame {
         });
         Conteneur_central.add(Bouton_mdp_oublié, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 140, -1));
 
-        jPasswordField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        Conteneur_central.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 210, -1));
+        Entree_mdp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Entree_mdp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_mdpActionPerformed(evt);
+            }
+        });
+        Conteneur_central.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 210, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(301, Short.MAX_VALUE)
+                .addContainerGap(276, Short.MAX_VALUE)
                 .addComponent(Conteneur_central, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addContainerGap(326, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,7 +126,7 @@ public class Authentification extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Entree_Nom_UtilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_Nom_UtilisateurActionPerformed
-        // TODO add your handling code here:
+        username = Entree_Nom_Utilisateur.getText();
     }//GEN-LAST:event_Entree_Nom_UtilisateurActionPerformed
 
     private void Bouton_creation_compteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creation_compteActionPerformed
@@ -134,6 +143,12 @@ public class Authentification extends javax.swing.JFrame {
         new Acceuil_Client().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Bouton_connexionActionPerformed
+
+    private void Entree_mdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdpActionPerformed
+        char mdp[] = Entree_mdp.getPassword();
+        for (char c : mdp)
+            password+=c;
+    }//GEN-LAST:event_Entree_mdpActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,8 +191,8 @@ public class Authentification extends javax.swing.JFrame {
     private javax.swing.JButton Bouton_mdp_oublié;
     private javax.swing.JPanel Conteneur_central;
     private javax.swing.JTextField Entree_Nom_Utilisateur;
+    private javax.swing.JPasswordField Entree_mdp;
     private javax.swing.JLabel Mot_de_passe;
     private javax.swing.JLabel Nom_utilisateur;
-    private javax.swing.JPasswordField jPasswordField1;
     // End of variables declaration//GEN-END:variables
 }

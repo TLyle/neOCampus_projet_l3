@@ -14,12 +14,18 @@ import java.awt.Rectangle;
  * @author jules
  */
 public class Creation_compte extends javax.swing.JFrame {
-
+    String username;
+    String password;
+    String password_verif;
+    String mail;
     /**
      * Creates new form Creation_compte
      */
     public Creation_compte() {
         initComponents();
+        username = "";
+        password = "";
+        password_verif = "";
     }
     private Dimension tailleEcranAdapté(){
         //get local graphics environment
@@ -45,7 +51,7 @@ public class Creation_compte extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        Entree_mail = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         Retour = new javax.swing.JButton();
         Entree_mdp_verification = new javax.swing.JPasswordField();
@@ -74,7 +80,13 @@ public class Creation_compte extends javax.swing.JFrame {
 
         jLabel3.setText("Adresse mail :");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 290, -1));
+
+        Entree_mail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_mailActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Entree_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 290, -1));
 
         jButton1.setText("Création du compte");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -91,7 +103,19 @@ public class Creation_compte extends javax.swing.JFrame {
             }
         });
         jPanel1.add(Retour, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        Entree_mdp_verification.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_mdp_verificationActionPerformed(evt);
+            }
+        });
         jPanel1.add(Entree_mdp_verification, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 290, -1));
+
+        Entree_mdp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_mdpActionPerformed(evt);
+            }
+        });
         jPanel1.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 290, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,7 +139,7 @@ public class Creation_compte extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Entree_nom_utilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_nom_utilisateurActionPerformed
-        // TODO add your handling code here:
+        username = Entree_nom_utilisateur.getText();
     }//GEN-LAST:event_Entree_nom_utilisateurActionPerformed
 
     private void RetourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetourActionPerformed
@@ -127,6 +151,22 @@ public class Creation_compte extends javax.swing.JFrame {
         new Authentification().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void Entree_mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mailActionPerformed
+        mail = Entree_mail.getText();
+    }//GEN-LAST:event_Entree_mailActionPerformed
+
+    private void Entree_mdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdpActionPerformed
+        char mdp[] = Entree_mdp.getPassword();
+        for (char c : mdp)
+            password += c;
+    }//GEN-LAST:event_Entree_mdpActionPerformed
+
+    private void Entree_mdp_verificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdp_verificationActionPerformed
+char mdp[] = Entree_mdp.getPassword();
+        for (char c : mdp)
+            password_verif +=c;
+    }//GEN-LAST:event_Entree_mdp_verificationActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,6 +204,7 @@ public class Creation_compte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Entree_mail;
     private javax.swing.JPasswordField Entree_mdp;
     private javax.swing.JPasswordField Entree_mdp_verification;
     private javax.swing.JTextField Entree_nom_utilisateur;
@@ -174,6 +215,5 @@ public class Creation_compte extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
