@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -24,9 +27,16 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     /**
      * Creates new form Acceuil_Client
      */
+    ArrayList<Integer> listeDeTickets; //TODO remplacer Integer par Ticket
     
     public Acceuil_Client() {
         initComponents();
+        listeDeTickets = new ArrayList<>();
+        //TODO remplacer la mise a jour statique par une mise à jour par base de donnée
+        for (int i = 0; i < 10; i++){
+            int ajout = i;
+            listeDeTickets.add(ajout);  
+        }
     }
     
     private Dimension tailleEcranAdapté(){
@@ -143,6 +153,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
                 .addGap(78, 78, 78)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(232, Short.MAX_VALUE))
+            .addGap(0, 476, Short.MAX_VALUE)
         );
         jPanel_informationsLayout.setVerticalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,7 +233,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
             JPanel p = new JPanel(new FlowLayout());
             JButton b;
             b = new JButton("Acceder a la conversation "+((Integer) i).toString());
-            b.addActionListener(this); 
+            b.addActionListener(this);
 
             p.add(b);
             p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
