@@ -8,6 +8,9 @@ package Client;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -98,12 +101,20 @@ public class Mdp_Oublie extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Envoie_mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Envoie_mailActionPerformed
-        new Authentification().setVisible(true);
+        try {
+            new Authentification().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Mdp_Oublie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_Envoie_mailActionPerformed
 
     private void RetourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetourActionPerformed
-        new Authentification().setVisible(true);
+        try {
+            new Authentification().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Mdp_Oublie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose(); // fermeture de la fenetre
     }//GEN-LAST:event_RetourActionPerformed
 

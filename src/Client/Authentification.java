@@ -8,6 +8,10 @@ package Client;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,10 +21,14 @@ public class Authentification extends javax.swing.JFrame {
     
     String username;
     String password;
+    String ip_distance;
+    Socket socket;
+    
     /**
      * Creates new form Authentification
+     * @throws java.io.IOException
      */
-    public Authentification() {
+    public Authentification() throws IOException {
         initComponents();
         username = "";
         password="";
@@ -53,6 +61,9 @@ public class Authentification extends javax.swing.JFrame {
         Entree_Nom_Utilisateur = new javax.swing.JTextField();
         Bouton_mdp_oublié = new javax.swing.JButton();
         Entree_mdp = new javax.swing.JPasswordField();
+        Bouton_local = new javax.swing.JButton();
+        Entree_ip = new javax.swing.JTextField();
+        Bouton_valider_ip = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -105,6 +116,30 @@ public class Authentification extends javax.swing.JFrame {
         });
         Conteneur_central.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 210, -1));
 
+        Bouton_local.setText("Local");
+        Bouton_local.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_localActionPerformed(evt);
+            }
+        });
+        Conteneur_central.add(Bouton_local, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, -1, -1));
+
+        Entree_ip.setText("Entrez IP distante");
+        Entree_ip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_ipActionPerformed(evt);
+            }
+        });
+        Conteneur_central.add(Entree_ip, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, -1));
+
+        Bouton_valider_ip.setText("Valider");
+        Bouton_valider_ip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_valider_ipActionPerformed(evt);
+            }
+        });
+        Conteneur_central.add(Bouton_valider_ip, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,7 +152,7 @@ public class Authentification extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(163, Short.MAX_VALUE)
+                .addGap(163, 163, 163)
                 .addComponent(Conteneur_central, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(164, Short.MAX_VALUE))
         );
@@ -140,8 +175,33 @@ public class Authentification extends javax.swing.JFrame {
     }//GEN-LAST:event_Bouton_mdp_oubliéActionPerformed
 
     private void Bouton_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_connexionActionPerformed
-        new Acceuil_Client().setVisible(true);
-        this.dispose();
+        try {
+            this.socket = new Socket(ip_distance, 9633);
+        } catch (IOException ex) {
+            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        username = Entree_Nom_Utilisateur.getText();
+        char mdp[] = Entree_mdp.getPassword();
+        for (char c : mdp)
+            password+=c;
+        boolean connection = false;
+        Connexion co = new Connexion(socket);
+        try {
+            connection = co.authen(username, password);
+        } catch (IOException ex) {
+            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(connection){
+            try {
+                new Acceuil_Client(socket).setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.dispose();
+        }else{
+            username = "";
+            password = "";
+        }
     }//GEN-LAST:event_Bouton_connexionActionPerformed
 
     private void Entree_mdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdpActionPerformed
@@ -149,6 +209,18 @@ public class Authentification extends javax.swing.JFrame {
         for (char c : mdp)
             password+=c;
     }//GEN-LAST:event_Entree_mdpActionPerformed
+
+    private void Entree_ipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_ipActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Entree_ipActionPerformed
+
+    private void Bouton_localActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_localActionPerformed
+        ip_distance = "127.0.0.1";
+    }//GEN-LAST:event_Bouton_localActionPerformed
+
+    private void Bouton_valider_ipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_valider_ipActionPerformed
+        ip_distance = Entree_ip.getText();
+    }//GEN-LAST:event_Bouton_valider_ipActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,7 +252,11 @@ public class Authentification extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Authentification().setVisible(true);
+                try {
+                    new Authentification().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -188,9 +264,12 @@ public class Authentification extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Bouton_connexion;
     private javax.swing.JButton Bouton_creation_compte;
+    private javax.swing.JButton Bouton_local;
     private javax.swing.JButton Bouton_mdp_oublié;
+    private javax.swing.JButton Bouton_valider_ip;
     private javax.swing.JPanel Conteneur_central;
     private javax.swing.JTextField Entree_Nom_Utilisateur;
+    private javax.swing.JTextField Entree_ip;
     private javax.swing.JPasswordField Entree_mdp;
     private javax.swing.JLabel Mot_de_passe;
     private javax.swing.JLabel Nom_utilisateur;

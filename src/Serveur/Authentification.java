@@ -21,19 +21,17 @@ public class Authentification implements Runnable {
 		Commubdd bdd = new Commubdd();
 		
 		try {
-			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream());
 			
 			while(!authentifier){
-				
-				out.println("Entrez votre login :");
-				out.flush();
+				/*out.println("Entrez votre login :");
+				out.flush();*/
 				login = in.readLine();
 				
 				
-				out.println("Entrez votre mot de passe :");
-				out.flush();
+				/*out.println("Entrez votre mot de passe :");
+				out.flush();*/
 				pass = in.readLine();
 	
 				if(bdd.verif_user(login, pass)){
@@ -50,7 +48,7 @@ public class Authentification implements Runnable {
 			
 		} catch (IOException e) {
 			
-			System.err.println(login+" ne répond pas !");
+			System.err.println(login+" ne rï¿½pond pas !");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

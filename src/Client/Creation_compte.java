@@ -8,6 +8,9 @@ package Client;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -143,12 +146,20 @@ public class Creation_compte extends javax.swing.JFrame {
     }//GEN-LAST:event_Entree_nom_utilisateurActionPerformed
 
     private void RetourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetourActionPerformed
-        new Authentification().setVisible(true);
+        try {
+            new Authentification().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Creation_compte.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose(); // fermeture de la fenetre
     }//GEN-LAST:event_RetourActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Authentification().setVisible(true);
+        try {
+            new Authentification().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Creation_compte.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

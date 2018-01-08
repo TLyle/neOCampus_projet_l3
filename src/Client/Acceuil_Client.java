@@ -11,32 +11,37 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import objet.Utilisateur;
 
 /**
  *
  * @author jules
  */
 public class Acceuil_Client extends javax.swing.JFrame implements ActionListener {
-
+    static Socket socket;
+    Utilisateur moi;
+    toServer lui;
     /**
      * Creates new form Acceuil_Client
      */
     ArrayList<Integer> listeDeTickets; //TODO remplacer Integer par Ticket
     
-    public Acceuil_Client() {
+    public Acceuil_Client(Socket s) throws IOException {
         initComponents();
-        listeDeTickets = new ArrayList<>();
-        //TODO remplacer la mise a jour statique par une mise à jour par base de donnée
-        for (int i = 0; i < 10; i++){
-            int ajout = i;
-            listeDeTickets.add(ajout);  
-        }
+        socket = s;
+        lui = new toServer(socket);
+        moi = lui.receptionUser();
+        Donnees_utilisateur.setText(moi.toString());
     }
     
     private Dimension tailleEcranAdapté(){
@@ -82,8 +87,8 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         Conteneur_Tickets = new javax.swing.JPanel();
         jPanel_Profil = new javax.swing.JPanel();
         jPanel_informations = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Donnees_utilisateur = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         Bouton_deconnection = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -141,25 +146,19 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         jPanel_Profil.setBackground(new java.awt.Color(0, 102, 204));
         jPanel_Profil.setPreferredSize(tailleEcranProfil());
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane1.setViewportView(jTextArea2);
+        Donnees_utilisateur.setColumns(20);
+        Donnees_utilisateur.setRows(5);
+        jScrollPane2.setViewportView(Donnees_utilisateur);
 
         javax.swing.GroupLayout jPanel_informationsLayout = new javax.swing.GroupLayout(jPanel_informations);
         jPanel_informations.setLayout(jPanel_informationsLayout);
         jPanel_informationsLayout.setHorizontalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_informationsLayout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(232, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
         );
         jPanel_informationsLayout.setVerticalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_informationsLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
         );
 
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -222,7 +221,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_Bouton_rechercheActionPerformed
 
     private void Bouton_deconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_deconnectionActionPerformed
-        new Authentification().setVisible(true);
+        try {
+            new Authentification().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_Bouton_deconnectionActionPerformed
 
@@ -272,7 +275,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Acceuil_Client().setVisible(true);
+                try {
+                    new Acceuil_Client(socket).setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -284,19 +291,18 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     private javax.swing.JButton Bouton_recherche;
     private javax.swing.JPanel Conteneur_Tickets;
     private javax.swing.JPanel Conteneur_boutons_ticket;
+    private javax.swing.JTextArea Donnees_utilisateur;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_Profil;
     private javax.swing.JPanel jPanel_Ticket;
     private javax.swing.JPanel jPanel_informations;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actionPerformed(ActionEvent e) {
         //System.out.println(e.getActionCommand());
-        jTextArea2.setText(e.getActionCommand());
         new Affichage_Ticket().setVisible(true);
         //this.dispose();
     }
