@@ -8,50 +8,41 @@ package Client;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import javax.swing.DefaultListModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 
 /**
  *
  * @author jules
  */
-public class Acceuil_Client extends javax.swing.JFrame {
+public class Acceuil_Client extends javax.swing.JFrame implements ActionListener {
 
     /**
      * Creates new form Acceuil_Client
      */
-    ArrayList<Integer> listeDeTickets; //TODO remplacer Integer par Ticket
     
     public Acceuil_Client() {
         initComponents();
-        listeDeTickets = new ArrayList<>();
-        //TODO remplacer la mise a jour statique par une mise à jour par base de donnée
-        for (int i = 0; i < 10; i++){
-            int ajout = i;
-            listeDeTickets.add(ajout);  
-        }
     }
+    
     private Dimension tailleEcranAdapté(){
         //get local graphics environment
         GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
         //get maximum window bounds
         Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
-        //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         Dimension dim = new Dimension((int)rectangle.getWidth(),(int)rectangle.getHeight());
         return dim;
     }
+    
     private Dimension tailleEcranTicket(){
         //get local graphics environment
         GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
         //get maximum window bounds
         Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
-        //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         Dimension dim = new Dimension( ((int)rectangle.getWidth()) * 1 / 3,(int)rectangle.getHeight());
         return dim;
     }
@@ -81,6 +72,8 @@ public class Acceuil_Client extends javax.swing.JFrame {
         Conteneur_Tickets = new javax.swing.JPanel();
         jPanel_Profil = new javax.swing.JPanel();
         jPanel_informations = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         Bouton_deconnection = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -138,15 +131,25 @@ public class Acceuil_Client extends javax.swing.JFrame {
         jPanel_Profil.setBackground(new java.awt.Color(0, 102, 204));
         jPanel_Profil.setPreferredSize(tailleEcranProfil());
 
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane1.setViewportView(jTextArea2);
+
         javax.swing.GroupLayout jPanel_informationsLayout = new javax.swing.GroupLayout(jPanel_informations);
         jPanel_informations.setLayout(jPanel_informationsLayout);
         jPanel_informationsLayout.setHorizontalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
+            .addGroup(jPanel_informationsLayout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(232, Short.MAX_VALUE))
         );
         jPanel_informationsLayout.setVerticalGroup(
             jPanel_informationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+            .addGroup(jPanel_informationsLayout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -219,7 +222,7 @@ public class Acceuil_Client extends javax.swing.JFrame {
             JPanel p = new JPanel(new FlowLayout());
             JButton b;
             b = new JButton("Acceder a la conversation "+((Integer) i).toString());
-            //b.addActionListener(...); 
+            b.addActionListener(this); 
 
             p.add(b);
             p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
@@ -276,5 +279,16 @@ public class Acceuil_Client extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_Profil;
     private javax.swing.JPanel jPanel_Ticket;
     private javax.swing.JPanel jPanel_informations;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //System.out.println(e.getActionCommand());
+        jTextArea2.setText(e.getActionCommand());
+        new Affichage_Ticket().setVisible(true);
+        //this.dispose();
+    }
+
 }
