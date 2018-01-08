@@ -20,6 +20,8 @@ public class Acceuil_Server extends javax.swing.JFrame {
      */
     public Acceuil_Server() {
         initComponents();
+        Thread t = new Thread(new Serveur());
+        t.start();
     }
 
     private Dimension tailleEcranAdapté(){

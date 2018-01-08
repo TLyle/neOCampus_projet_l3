@@ -122,6 +122,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
         Bouton_creer_ticket.setText("Créer un ticket");
         Bouton_creer_ticket.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        Bouton_creer_ticket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_creer_ticketActionPerformed(evt);
+            }
+        });
         Conteneur_boutons_ticket.add(Bouton_creer_ticket);
 
         Conteneur_Tickets.setLayout(new java.awt.GridLayout(10, 1));
@@ -244,6 +249,10 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         }
         Conteneur_Tickets.updateUI(); // rafraichi le panel
     }//GEN-LAST:event_Bouton_actualiserActionPerformed
+
+    private void Bouton_creer_ticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creer_ticketActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Bouton_creer_ticketActionPerformed
 
     /**
      * @param args the command line arguments

@@ -32,6 +32,7 @@ public class Authentification extends javax.swing.JFrame {
         initComponents();
         username = "";
         password="";
+        ip_distance = "127.0.0.1";
     }
     
     private Dimension tailleEcranAdapté(){

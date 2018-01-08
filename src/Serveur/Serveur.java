@@ -3,22 +3,33 @@ package Serveur;
 import java.io.*;
 import java.net.*;
 
-public class Serveur {
+public class Serveur implements Runnable{
  public static ServerSocket ss = null;
  public static Thread t;
 
- 
+    public void run(){
+        try {
+            ss = new ServerSocket(9633);
+            System.out.println("Le serveur est Ã  l'Ã©coute du port "+ss.getLocalPort());
+
+            t = new Thread(new Accepter_connexion(ss));
+            t.start();
+
+        } catch (IOException e) {
+            System.err.println("Le port "+ss.getLocalPort()+" est dÃ©jÃ  utilisÃ© !");
+        }
+    }
 	public static void main(String[] args) {
 		
 		try {
 			ss = new ServerSocket(9633);
-			System.out.println("Le serveur est à l'écoute du port "+ss.getLocalPort());
+			System.out.println("Le serveur est ï¿½ l'ï¿½coute du port "+ss.getLocalPort());
 			
 			t = new Thread(new Accepter_connexion(ss));
 			t.start();
 			
 		} catch (IOException e) {
-			System.err.println("Le port "+ss.getLocalPort()+" est déjà utilisé !");
+			System.err.println("Le port "+ss.getLocalPort()+" est dï¿½jï¿½ utilisï¿½ !");
 		}
 	
 	}
