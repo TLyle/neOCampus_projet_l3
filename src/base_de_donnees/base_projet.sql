@@ -58,6 +58,7 @@ CREATE TABLE message (
 
 insert into groupe values ('TDA2', 'Etude');
 insert into groupe values ('TDA3', 'Etude');
+insert into groupe values ('TDA4', 'Etude');
 insert into groupe values ('Electricien', 'Technique');
 insert into groupe values ('Plombier', 'Technique');
 
