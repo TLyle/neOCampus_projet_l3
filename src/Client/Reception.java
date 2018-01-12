@@ -10,8 +10,7 @@ public class Reception implements Runnable {
 	private String message = null;
 	
 	public Reception(BufferedReader in){
-		
-		this.in = in;
+            this.in = in;
 	}
 	
 	public void run() {

@@ -20,31 +20,49 @@ public class toClient implements Runnable {
 	private Commubdd bdd = new Commubdd();
 	private Utilisateur user = null;
 	
-	public toClient(Socket s, String log){
-		
-		socket = s;
-		login = log;
+	public toClient(Socket s, String log){		
+            socket = s;
+            login = log;
 	}
 	
 	public void envoieUser(Utilisateur user) throws IOException {
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(socket.getOutputStream());
-		
-		
-		out.println(user.getNom());
-		out.flush();
-		out.println(user.getPrenom());
-		out.flush();
-		out.println(user.getUser_name());
-		out.flush();
-		out.println(user.getMail());
-		out.flush();
-		out.println(user.getGroupe());
-		out.flush();
-		out.println(user.getType());
-		out.flush();
+            out = new PrintWriter(socket.getOutputStream());
+
+            out.println(user.getNom());
+            out.flush();
+            out.println(user.getPrenom());
+            out.flush();
+            out.println(user.getUser_name());
+            out.flush();
+            out.println(user.getMail());
+            out.flush();
+            out.println(user.getGroupe());
+            out.flush();
+            out.println(user.getType());
+            out.flush();
+            out.close();
 	}
 	
+        //TODO finir reception d'ordre
+        public void attenteOrdre() throws IOException{
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            String ordre = in.readLine();
+            switch(ordre){
+                case "Ticket":
+                    break;
+                case "Message":
+                    break;
+                case "Rafraichir":
+                    break;
+                case "Deconnexion":
+                    in.close();
+                    socket.close();
+            }
+            in.close();
+        }
+        
+        @Override
 	public void run() {
 		try {
 		
@@ -62,7 +80,7 @@ public class toClient implements Runnable {
 		th2.start();
 		
 		} catch (IOException | ClassNotFoundException | SQLException e) {
-			System.err.println(login +" s'est déconnecté ");
+			System.err.println(login +" s'est dÃ©connectÃ© ");
 		}
 }
 }

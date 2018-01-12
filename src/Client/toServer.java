@@ -46,6 +46,40 @@ public class toServer implements Runnable {
 		return user;
 	}
 	
+        public void envoieTicket(){
+            
+        }
+        
+        public void envoieMessage(){
+            
+        }
+        
+        public void rafraichir(){
+            
+        }
+        //TODO finir envoie d'ordre
+        public void envoieOrdre(String ordre) throws IOException{
+            out = new PrintWriter(socket.getOutputStream());
+            
+            out.println(ordre);
+            out.flush();
+            switch(ordre){
+                case "Ticket":
+                    envoieTicket();
+                    break;
+                case "Message":
+                    envoieMessage();
+                    break;
+                case "Rafraichir":
+                    rafraichir();
+                    break;
+                case "Deconnexion":
+                    out.close();
+                    socket.close();
+            }
+            out.close();
+        }
+        
 	public void run() {
 		try {
 			if(user == null) {
@@ -65,7 +99,7 @@ public class toServer implements Runnable {
 		   
 		    
 		} catch (IOException e) {
-			System.err.println("Le serveur distant s'est déconnecté !");
+			System.err.println("Le serveur distant s'est dï¿½connectï¿½ !");
 		}
 	}
 
