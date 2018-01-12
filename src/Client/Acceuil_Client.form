@@ -100,10 +100,7 @@
         </Container>
         <Container class="javax.swing.JPanel" name="Conteneur_Tickets">
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-            <Property name="columns" type="int" value="1"/>
-            <Property name="rows" type="int" value="10"/>
-          </Layout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
         </Container>
       </SubComponents>
     </Container>

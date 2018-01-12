@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import objet.Utilisateur;
 
 /**
@@ -129,7 +131,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         });
         Conteneur_boutons_ticket.add(Bouton_creer_ticket);
 
-        Conteneur_Tickets.setLayout(new java.awt.GridLayout(10, 1));
+        Conteneur_Tickets.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel_TicketLayout = new javax.swing.GroupLayout(jPanel_Ticket);
         jPanel_Ticket.setLayout(jPanel_TicketLayout);
@@ -235,7 +237,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_Bouton_deconnectionActionPerformed
 
     private void Bouton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_actualiserActionPerformed
-        //Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
+        /*//Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
         for(int i = 0; i<10; i++) {
             JPanel p = new JPanel(new FlowLayout());
             JButton b;
@@ -247,11 +249,25 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
             Conteneur_Tickets.add(p);
         }
-        Conteneur_Tickets.updateUI(); // rafraichi le panel
+        Conteneur_Tickets.updateUI(); // rafraichi le panel*/
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        DefaultMutableTreeNode professeur = new DefaultMutableTreeNode("Professeur");
+        DefaultMutableTreeNode etudiant = new DefaultMutableTreeNode("Etudiant");
+        DefaultMutableTreeNode service_Technique = new DefaultMutableTreeNode("Service technique");
+        DefaultMutableTreeNode administrateur = new DefaultMutableTreeNode("Administrateur");
+        root.add(etudiant);
+        root.add(professeur);
+        root.add(service_Technique);
+        root.add(administrateur);
+        JTree arbre_tickets= new JTree(root); 
+        Conteneur_Tickets.add(arbre_tickets);
+        arbre_tickets.setRootVisible(true);
+        arbre_tickets.setShowsRootHandles(true);
+        Conteneur_Tickets.updateUI();
     }//GEN-LAST:event_Bouton_actualiserActionPerformed
 
     private void Bouton_creer_ticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creer_ticketActionPerformed
-        // TODO add your handling code here:
+        new Creation_Ticket().setVisible(true);
     }//GEN-LAST:event_Bouton_creer_ticketActionPerformed
 
     /**
