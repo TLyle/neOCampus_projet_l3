@@ -5,6 +5,7 @@
  */
 package Client;
 
+import base_de_donnees.Commubdd;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
@@ -13,9 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -259,6 +263,51 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         root.add(professeur);
         root.add(service_Technique);
         root.add(administrateur);
+        Commubdd commubdd = new Commubdd();
+        boolean pasDeFeuille = true;
+        DefaultMutableTreeNode feuilleCourante; // = TDA(x)
+        try {
+            List<String> listGrp = commubdd.getListGrp("etude");
+            for(String nomGroupe : listGrp){
+                etudiant.add(new DefaultMutableTreeNode(nomGroupe));
+                if(pasDeFeuille)
+                    feuilleCourante = etudiant.getFirstLeaf();
+                else
+                    feuilleCourante = etudiant.getNextLeaf();
+                if(!moi.getGroupe().equals(nomGroupe)){
+                    try {
+                        List<String> listTickets = commubdd.getListTicket(moi.getGroupe(), nomGroupe);
+                        for (String nomTicket : listTickets) {
+                            feuilleCourante.add(new DefaultMutableTreeNode(nomTicket));
+                        }
+                    } catch (ClassNotFoundException | SQLException ex) {
+                        Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    listGrp.forEach((String nomGroupe2) ->{
+                        try {
+                            List<String> listTickets = commubdd.getListTicket(moi.getGroupe(), nomGroupe2);
+                            
+                        } catch (ClassNotFoundException | SQLException ex) {
+                            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                }
+            }
+            //feuilleCourante = feuilleCourante.getNextLeaf();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            List<String> listGrp = commubdd.getListGrp("technique");
+            listGrp.forEach((nom) -> {
+                service_Technique.add(new DefaultMutableTreeNode(nom));
+            });
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         JTree arbre_tickets= new JTree(root); 
         Conteneur_Tickets.add(arbre_tickets);
         arbre_tickets.setRootVisible(true);
