@@ -108,17 +108,29 @@ public class Commubdd {
             return liste;
         }
         
+        public Ticket extraireTicket(ResultSet result) throws SQLException{
+            Ticket tick;
+            System.out.println("Dans la fonction");
+            int idTicket = result.getInt(1);
+            String titre = result.getObject(2).toString();
+            String groupeDestinataire = result.getObject(3).toString();
+            String groupeEmetteur = result.getObject(4).toString();
+            tick = new Ticket(titre, groupeEmetteur, groupeDestinataire, idTicket);
+            
+            return tick;
+        }
+        
         public List getListTicket(String grpEmetteur, String grpDestinataire) throws ClassNotFoundException, SQLException{
             Class.forName(driver);
             List<Ticket> liste = new LinkedList<>();
             Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
             Statement state = conn.createStatement();
             
-            String commande = "SELECT * FROM ticket WHERE (GroupeSortant = "+grpEmetteur+") AND (GroupeDestinataire = "+grpDestinataire+")";
+            String commande = "SELECT * FROM ticket WHERE (GroupeSortant = '"+grpEmetteur+"') AND (GroupeDestinataire = '"+grpDestinataire+"')";
             ResultSet result = state.executeQuery(commande);
             
             while(result.next()){
-                
+                liste.add(extraireTicket(result));
             }         
             return liste;
         }

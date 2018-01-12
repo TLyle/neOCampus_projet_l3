@@ -18,6 +18,6 @@ public class bdd_test {
 			System.out.println("non");
 		Utilisateur util = bdd.recupUser(user);
 		System.out.println(util);
-                System.out.println(bdd.getListGrp("etude"));
+                System.out.println(bdd.getListTicket("TDA2","Plombier"));
 	}
 }

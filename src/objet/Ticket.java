@@ -14,19 +14,24 @@ import java.util.List;
  */
 public class Ticket {
     private String titre;
-    private String groupe;
+    private String groupeEmetteur;
+    private String groupeDestinataire;
     private int idTicket;
-    private List<String> message = new LinkedList<>();
+    private List<Message> message = new LinkedList<>();
 
-    public Ticket(String titre, String groupe, int idTicket, String message) {
+    public Ticket(String titre, String groupeEmetteur, String groupeDestinataire, int idTicket) {
         this.titre = titre;
-        this.groupe = groupe;
+        this.groupeEmetteur = groupeEmetteur;
+        this.groupeDestinataire = groupeDestinataire;
         this.idTicket = idTicket;
-        this.message.add(message);
     }
 
-    public String getGroupe() {
-        return groupe;
+    public String getGroupeDestinataire() {
+        return groupeDestinataire;
+    }
+
+    public void setGroupeEmetteur(String groupeEmetteur) {
+        this.groupeEmetteur = groupeEmetteur;
     }
 
     public int getIdTicket() {
@@ -37,9 +42,10 @@ public class Ticket {
         return titre;
     }
 
+    @Override
     public String toString() {
-        return ("Titre "+titre+"\n Groupe "+groupe+"\n Idticket "+idTicket);
+        return ("Ticket : "+titre);
     }
-
+    
     
 }
