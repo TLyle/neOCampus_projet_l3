@@ -27,5 +27,9 @@ public class Message {
         return Texte;
     }
     
-    
+    @Override
+    public String toString() {
+        return Texte;
+    }
+ 
 }

@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import Client.*;
 import Serveur.*;
+import java.util.List;
+import objet.Ticket;
 import objet.Utilisateur;
 
 public class bdd_test {
@@ -18,6 +20,9 @@ public class bdd_test {
 			System.out.println("non");
 		Utilisateur util = bdd.recupUser(user);
 		System.out.println(util);
-                System.out.println(bdd.getListTicket("TDA2","Plombier"));
-	}
+                List<Ticket> list = bdd.getListTicket("TDA2","Plombier");
+                for(int i =0; i< list.size(); i++){
+                    list.get(i).afficherMessage();
+                }
+        }
 }

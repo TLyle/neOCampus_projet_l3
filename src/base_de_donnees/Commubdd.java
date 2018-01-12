@@ -3,6 +3,7 @@ package base_de_donnees;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import objet.Message;
 import objet.Ticket;
 
 import objet.TypeUtilisateur;
@@ -108,7 +109,34 @@ public class Commubdd {
             return liste;
         }
         
-        public Ticket extraireTicket(ResultSet result) throws SQLException{
+        public Message extraireMessage(ResultSet result) throws SQLException{
+            Message mess;
+ 
+            String expediteur = result.getObject(2).toString();
+            String etat = result.getObject(3).toString();
+            String texte = result.getObject(4).toString();
+            mess = new Message(expediteur, etat, texte);
+ 
+            return mess;
+        }
+
+        public void ajoutMessage(Ticket ticket) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+ 
+            List<Ticket> liste = new LinkedList<>();
+            Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
+            Statement state = conn.createStatement();
+
+            String commande = "SELECT * FROM message WHERE (Ticket = "+ ticket.getIdTicket() +")";
+            ResultSet result = state.executeQuery(commande);
+            
+            while(result.next()){
+                Message mess = extraireMessage(result);
+                ticket.addMessage(mess);
+            }
+        }
+ 
+        public Ticket extraireTicket(ResultSet result) throws SQLException, ClassNotFoundException{
             Ticket tick;
             System.out.println("Dans la fonction");
             int idTicket = result.getInt(1);
@@ -116,6 +144,7 @@ public class Commubdd {
             String groupeDestinataire = result.getObject(3).toString();
             String groupeEmetteur = result.getObject(4).toString();
             tick = new Ticket(titre, groupeEmetteur, groupeDestinataire, idTicket);
+            ajoutMessage(tick);
             
             return tick;
         }

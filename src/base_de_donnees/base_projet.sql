@@ -58,7 +58,6 @@ CREATE TABLE message (
 
 insert into groupe values ('TDA2', 'Etude');
 insert into groupe values ('TDA3', 'Etude');
-insert into groupe values ('TDA4', 'Etude');
 insert into groupe values ('Electricien', 'Technique');
 insert into groupe values ('Plombier', 'Technique');
 
@@ -70,7 +69,12 @@ insert into utilisateur values ('plomb', 'plomb', 'Service technique', 'Plombier
 
 insert into ticket values ('1', 'test plombier', 'TDA2', 'Plombier');
 insert into ticket values ('2', 'test electricien', 'TDA3', 'Electricien');
+insert into ticket values ('3', 'test tda3', 'Electricien', 'TDA3'); 
+insert into ticket values ('4', 'test tda2', 'Plombier', 'TDA2');
 
 insert into message values ('1', 'leo','Recu', 'Ceci est un test pour les plombier');
 insert into message values ('2', 'jules', 'Recu', 'Ceci est un test pour les electriciens');
 insert into message values ('1', 'plomb', 'Recu', 'Ceci est une reponse des plombiers');
+insert into message values ('1', 'plomb', 'Recu', 'Ceci est une reponse des plombiers'); 
+insert into message values ('3', 'elec', 'Recu', 'Ceci est un test pour tda3'); 
+insert into message values ('4', 'plomb', 'Recu', 'Ceci est un test pour tda2');

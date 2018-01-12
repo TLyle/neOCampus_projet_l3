@@ -47,5 +47,19 @@ public class Ticket {
         return ("Ticket : "+titre);
     }
     
+    public List<Message> getMessage() {
+        return message;
+    }
     
+    public void afficherMessage(){
+        List<Message> mess = this.getMessage();
+        for(int j=0; j < mess.size(); j++){
+            System.out.println(mess.get(j).getTexte());
+        }
+    }
+ 
+    public void addMessage(Message mess){
+        message.add(mess);
+    }
+ 
 }
