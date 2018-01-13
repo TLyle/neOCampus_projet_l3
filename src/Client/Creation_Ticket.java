@@ -8,17 +8,29 @@ package Client;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTextField;
+import objet.Utilisateur;
 
 /**
  *
  * @author jules
  */
 public class Creation_Ticket extends javax.swing.JFrame {
-
+    String titre = "";
+    String message = "";
+    String groupe = "";
+    static Socket socket = null;
+    static Utilisateur user = null;
     /**
      * Creates new form Creation_Ticket
      */
-    public Creation_Ticket() {
+    public Creation_Ticket(Socket socket, Utilisateur user) {
+        this.socket = socket;
+        this.user = user;
         initComponents();
     }
     
@@ -44,10 +56,10 @@ public class Creation_Ticket extends javax.swing.JFrame {
         Bouton_retour = new javax.swing.JButton();
         Bouton_envoyer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        ComboBox_groupe = new javax.swing.JComboBox<>();
+        Saisie_titre = new javax.swing.JTextField();
+        Choix_groupe = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        textArea1 = new java.awt.TextArea();
+        Saisie_texte = new java.awt.TextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -69,6 +81,12 @@ public class Creation_Ticket extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Titre :");
 
+        Saisie_titre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Saisie_titreActionPerformed(evt);
+            }
+        });
+
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Groupe :");
 
@@ -88,12 +106,12 @@ public class Creation_Ticket extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
+                    .addComponent(Saisie_titre)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(ComboBox_groupe, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Choix_groupe, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(369, Short.MAX_VALUE))))
-            .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Saisie_texte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,14 +119,14 @@ public class Creation_Ticket extends javax.swing.JFrame {
                 .addComponent(Bouton_retour)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ComboBox_groupe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Choix_groupe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Saisie_titre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Saisie_texte, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(Bouton_envoyer)
                 .addContainerGap())
@@ -139,9 +157,24 @@ public class Creation_Ticket extends javax.swing.JFrame {
     }//GEN-LAST:event_Bouton_retourActionPerformed
 
     private void Bouton_envoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_envoyerActionPerformed
-        //TODO coder l'envoi du message
-        this.dispose();
+        titre = "";
+        message = "";
+        groupe = "TDA2";
+        titre = Saisie_titre.getText();
+        message = Saisie_texte.getText();
+        ToServer serv = new ToServer(socket);
+        try {
+            if (serv.envoieTicket(titre, user.getGroupe(), groupe, message, user))
+                this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(Creation_Ticket.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Bouton_envoyerActionPerformed
+
+    private void Saisie_titreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Saisie_titreActionPerformed
+        titre = "";
+        titre = Saisie_titre.getText();
+    }//GEN-LAST:event_Saisie_titreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,7 +206,7 @@ public class Creation_Ticket extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Creation_Ticket().setVisible(true);
+                new Creation_Ticket(socket, user).setVisible(true);
             }
         });
     }
@@ -181,11 +214,11 @@ public class Creation_Ticket extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Bouton_envoyer;
     private javax.swing.JButton Bouton_retour;
-    private javax.swing.JComboBox<String> ComboBox_groupe;
+    private javax.swing.JComboBox<String> Choix_groupe;
+    private java.awt.TextArea Saisie_texte;
+    private javax.swing.JTextField Saisie_titre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private java.awt.TextArea textArea1;
     // End of variables declaration//GEN-END:variables
 }

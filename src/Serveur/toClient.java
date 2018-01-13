@@ -44,15 +44,50 @@ public class toClient implements Runnable {
             out.close();
 	}
 	
+        public void receptionMessage() throws IOException, ClassNotFoundException, SQLException{
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+            
+            String expediteur = in.readLine();
+            String texte = in.readLine();
+            int idTicket = in.read();
+            bdd.creationMessageBdd(idTicket, texte, expediteur);
+            out.println("message cree");
+            out.flush();
+            
+            in.close();
+            out.close();
+        }
+        
+        public void receptionTicket() throws IOException, ClassNotFoundException, SQLException{
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+            
+            String titre = in.readLine();
+            String groupeE = in.readLine();
+            String groupeD = in.readLine();
+            int idTicket = bdd.newIdTicket();
+            out.println(idTicket);
+            out.flush();
+            bdd.creationTicketBdd(idTicket, titre, groupeE, groupeD);
+            out.println("ticket cree");
+            out.flush();
+                        
+            in.close();
+            out.close();
+        }
+        
         //TODO finir reception d'ordre
-        public void attenteOrdre() throws IOException{
+        public void attenteOrdre() throws IOException, SQLException, ClassNotFoundException{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
             String ordre = in.readLine();
             switch(ordre){
-                case "Ticket":
+                case "\\/ envoie ticket \\/":
+                    receptionTicket();
                     break;
-                case "Message":
+                case "\\/ envoie message \\/":
+                    receptionMessage();
                     break;
                 case "Rafraichir":
                     break;

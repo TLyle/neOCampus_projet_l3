@@ -36,7 +36,7 @@ import objet.Utilisateur;
 public class Acceuil_Client extends javax.swing.JFrame implements ActionListener {
     static Socket socket;
     Utilisateur moi;
-    toServer lui;
+    ToServer lui;
     /**
      * Creates new form Acceuil_Client
      */
@@ -45,7 +45,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     public Acceuil_Client(Socket s) throws IOException {
         initComponents();
         socket = s;
-        lui = new toServer(socket);
+        lui = new ToServer(socket);
         moi = lui.receptionUser();
         Donnees_utilisateur.setText(moi.toString());
     }
@@ -233,6 +233,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
     private void Bouton_deconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_deconnectionActionPerformed
         try {
+            socket.close();
             new Authentification().setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -316,7 +317,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_Bouton_actualiserActionPerformed
 
     private void Bouton_creer_ticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creer_ticketActionPerformed
-        new Creation_Ticket().setVisible(true);
+        new Creation_Ticket(socket, moi).setVisible(true);
     }//GEN-LAST:event_Bouton_creer_ticketActionPerformed
 
     /**

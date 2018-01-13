@@ -64,7 +64,7 @@ public class Connexion implements Runnable {
 			}
 		}
 			
-			th = new Thread(new toServer(socket));
+			th = new Thread(new ToServer(socket));
 			th.start();
 		
 		} catch (IOException e) {

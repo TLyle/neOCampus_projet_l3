@@ -2,12 +2,13 @@ package Client;
 
 import java.io.*;
 import java.net.*;
+import objet.Ticket;
 
 import objet.TypeUtilisateur;
 import objet.Utilisateur;
 
 
-public class toServer implements Runnable {
+public class ToServer implements Runnable {
 
 	private Socket socket;
 	private PrintWriter out = null;
@@ -15,7 +16,7 @@ public class toServer implements Runnable {
 	private Thread th1, th2;
 	private Utilisateur user = null;
 	
-	public toServer(Socket s){
+	public ToServer(Socket s){
 		socket = s;
 	}
 	
@@ -63,21 +64,53 @@ public class toServer implements Runnable {
             
             out.println(ordre);
             out.flush();
-            switch(ordre){
-                case "Ticket":
-                    envoieTicket();
-                    break;
-                case "Message":
-                    envoieMessage();
-                    break;
-                case "Rafraichir":
-                    rafraichir();
-                    break;
-                case "Deconnexion":
-                    out.close();
-                    socket.close();
-            }
             out.close();
+        }
+        
+        public boolean envoieMessage(String message, Utilisateur user, int idTicket) throws IOException{
+            boolean ok;
+            
+            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            out.println("\\/ envoie message \\/");
+            out.flush();
+            out.println(user.getUser_name());
+            out.flush();
+            out.println(message);
+            out.flush();
+            out.println(idTicket);
+            out.flush();
+            ok = in.readLine().equals("message cree");
+            
+            out.close();
+            in.close();
+            return ok;
+        }
+        
+        public boolean envoieTicket(String titre, String groupeE, String groupeD, String message, Utilisateur user) throws IOException{
+            boolean ok = false;
+            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            out.println("\\/ envoie ticket \\/");
+            out.flush();
+            out.println(titre);
+            out.flush();
+            out.println(groupeE);
+            out.flush();
+            out.println(groupeD);
+            out.flush();
+            int idticket = in.read();
+            boolean ticketRecu = in.readLine().equals("ticket cree");
+            
+            user.addTicket(new Ticket(titre, groupeE, groupeD, idticket));
+            if(envoieMessage(message, user, idticket) && ticketRecu)
+                ok = true;
+            
+            in.close();
+            out.close();
+            return ok;
         }
         
 	public void run() {

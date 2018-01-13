@@ -11,10 +11,10 @@ import objet.Utilisateur;
 
 public class Commubdd {
 	
-	private static String driver = "com.mysql.jdbc.Driver";
-	private static String url = "jdbc:mysql://localhost/projet";
-	private static String ident_user = "root";
-	private static String ident_mdp = "";
+	private static final String driver = "com.mysql.jdbc.Driver";
+	private static final String url = "jdbc:mysql://localhost/projet";
+	private static final String ident_user = "root";
+	private static final String ident_mdp = "";
 	
 	public boolean verif_user(String user, String mdp) throws ClassNotFoundException, SQLException {
 		Class.forName(driver);
@@ -138,7 +138,7 @@ public class Commubdd {
  
         public Ticket extraireTicket(ResultSet result) throws SQLException, ClassNotFoundException{
             Ticket tick;
-            System.out.println("Dans la fonction");
+            
             int idTicket = result.getInt(1);
             String titre = result.getObject(2).toString();
             String groupeDestinataire = result.getObject(3).toString();
@@ -162,5 +162,45 @@ public class Commubdd {
                 liste.add(extraireTicket(result));
             }         
             return liste;
+        }
+        
+        public int newIdTicket() throws ClassNotFoundException, SQLException{
+            int id = 1;
+            boolean ok = false;
+            Class.forName(driver);
+            List<Ticket> liste = new LinkedList<>();
+            Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
+            Statement state = conn.createStatement();
+            
+            String commande = "SELECT * FROM ticket";
+            ResultSet result = state.executeQuery(commande);
+            
+            while(result.next() && !ok){
+                if(id == result.getInt(1))
+                    id ++;
+                else
+                    ok = true;
+            }
+            return id;
+        }
+        
+        public void creationTicketBdd(int id, String titre, String groupeE, String groupeD) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            List<Ticket> liste = new LinkedList<>();
+            Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
+            Statement state = conn.createStatement();
+            
+            String commande = "insert into ticket values ('"+id+"', '"+titre+"', '"+groupeE+"', '"+groupeD+"')";
+            ResultSet result = state.executeQuery(commande);
+        }
+        
+        public void creationMessageBdd(int id, String texte, String expediteur) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            List<Ticket> liste = new LinkedList<>();
+            Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
+            Statement state = conn.createStatement();
+            
+            String commande = "insert into message values ('"+id+"', '"+expediteur+"','Recu', '"+texte+"')";
+            ResultSet result = state.executeQuery(commande);
         }
 }
