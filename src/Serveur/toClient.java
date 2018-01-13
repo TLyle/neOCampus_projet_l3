@@ -41,7 +41,6 @@ public class toClient implements Runnable {
             out.flush();
             out.println(user.getType());
             out.flush();
-            out.close();
 	}
 	
         public void receptionMessage() throws IOException, ClassNotFoundException, SQLException{
@@ -54,15 +53,11 @@ public class toClient implements Runnable {
             bdd.creationMessageBdd(idTicket, texte, expediteur);
             out.println("message cree");
             out.flush();
-            
-            in.close();
-            out.close();
         }
         
         public void receptionTicket() throws IOException, ClassNotFoundException, SQLException{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
-            
             String titre = in.readLine();
             String groupeE = in.readLine();
             String groupeD = in.readLine();
@@ -72,13 +67,10 @@ public class toClient implements Runnable {
             bdd.creationTicketBdd(idTicket, titre, groupeE, groupeD);
             out.println("ticket cree");
             out.flush();
-                        
-            in.close();
-            out.close();
         }
         
         //TODO finir reception d'ordre
-        public void attenteOrdre() throws IOException, SQLException, ClassNotFoundException{
+        public boolean attenteOrdre() throws IOException, SQLException, ClassNotFoundException{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
             String ordre = in.readLine();
@@ -89,16 +81,31 @@ public class toClient implements Runnable {
                 case "\\/ envoie message \\/":
                     receptionMessage();
                     break;
-                case "Rafraichir":
+                case "\\/ rafraichir \\/":
                     break;
-                case "Deconnexion":
-                    in.close();
-                    socket.close();
+                case "\\/ deconnexion \\/":
+                    return true;
             }
-            in.close();
+            return false;
         }
         
         @Override
+        public void run(){
+            boolean deco = false;
+            try{
+                if(user == null) {
+			user = bdd.recupUser(login);
+			envoieUser(user);
+		}
+                while(! deco){
+                    deco = attenteOrdre();
+                }
+            }catch (IOException | ClassNotFoundException | SQLException e) {
+                System.err.println(login +" s'est déconnecté ");
+            }
+        }
+        
+        /*@Override
 	public void run() {
 		try {
 		
@@ -118,6 +125,6 @@ public class toClient implements Runnable {
 		} catch (IOException | ClassNotFoundException | SQLException e) {
 			System.err.println(login +" s'est déconnecté ");
 		}
-}
+        }*/
 }
 

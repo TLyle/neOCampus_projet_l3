@@ -28,13 +28,7 @@ public class Authentification implements Runnable {
 			out = new PrintWriter(socket.getOutputStream());
 			
 			while(!authentifier){
-				/*out.println("Entrez votre login :");
-				out.flush();*/
 				login = in.readLine();
-				
-				
-				/*out.println("Entrez votre mot de passe :");
-				out.flush();*/
 				pass = in.readLine();
 	
 				if(bdd.verif_user(login, pass)){
@@ -53,10 +47,8 @@ public class Authentification implements Runnable {
 			
 			System.err.println(login+" ne r�pond pas !");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

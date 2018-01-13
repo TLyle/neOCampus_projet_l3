@@ -4,10 +4,10 @@ import java.io.*;
 import java.net.*;
 
 public class Serveur implements Runnable{
- public static ServerSocket ss = null;
- public static Thread t;
+    public static ServerSocket ss = null;
+    public static Thread t;
 
- @Override
+    @Override
     public void run(){
         try {
             ss = new ServerSocket(9633);
@@ -20,7 +20,8 @@ public class Serveur implements Runnable{
             System.err.println("Le port "+ss.getLocalPort()+" est déjà utilisé !");
         }
     }
-	public static void main(String[] args) {
+}
+	/*public static void main(String[] args) {
 		
 		try {
 			ss = new ServerSocket(9633);
@@ -33,8 +34,5 @@ public class Serveur implements Runnable{
 			System.err.println("Le port "+ss.getLocalPort()+" est d�j� utilis� !");
 		}
 	
-	}
-
-	
-	}
+	}*/
 

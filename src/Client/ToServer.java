@@ -21,30 +21,30 @@ public class ToServer implements Runnable {
 	}
 	
 	public Utilisateur receptionUser() throws IOException {
-		out = new PrintWriter(socket.getOutputStream());
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		
-		String nom = in.readLine();
-		String prenom = in.readLine();
-		String user_name = in.readLine();
-		String mail = in.readLine();
-		String groupe = in.readLine();
-		String type = in.readLine();
-		Utilisateur user = null;
-		
-		switch(type) {
-		case "etudiant":
-			user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.etudiant);
-			System.out.println(user);
-			break;
-		case "professeur":
-			user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.professeur);
-			break;
-		case "administrateur":
-			user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.administrateur);
-			break;
-		}
-		return user;
+            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            String nom = in.readLine();
+            String prenom = in.readLine();
+            String user_name = in.readLine();
+            String mail = in.readLine();
+            String groupe = in.readLine();
+            String type = in.readLine();
+            Utilisateur user = null;
+
+            switch(type) {
+            case "etudiant":
+                    user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.etudiant);
+                    System.out.println(user);
+                    break;
+            case "professeur":
+                    user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.professeur);
+                    break;
+            case "administrateur":
+                    user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.administrateur);
+                    break;
+            }
+            return user;
 	}
 	
         public void envoieTicket(){
@@ -64,7 +64,6 @@ public class ToServer implements Runnable {
             
             out.println(ordre);
             out.flush();
-            out.close();
         }
         
         public boolean envoieMessage(String message, Utilisateur user, int idTicket) throws IOException{
@@ -76,15 +75,13 @@ public class ToServer implements Runnable {
             out.println("\\/ envoie message \\/");
             out.flush();
             out.println(user.getUser_name());
+            System.out.println("ici");
             out.flush();
             out.println(message);
             out.flush();
             out.println(idTicket);
             out.flush();
             ok = in.readLine().equals("message cree");
-            
-            out.close();
-            in.close();
             return ok;
         }
         
@@ -107,9 +104,6 @@ public class ToServer implements Runnable {
             user.addTicket(new Ticket(titre, groupeE, groupeD, idticket));
             if(envoieMessage(message, user, idticket) && ticketRecu)
                 ok = true;
-            
-            in.close();
-            out.close();
             return ok;
         }
         
