@@ -237,25 +237,21 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_Bouton_deconnectionActionPerformed
 
     private void Bouton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_actualiserActionPerformed
-        try {
-            /*//Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
-            for(int i = 0; i<10; i++) {
-            JPanel p = new JPanel(new FlowLayout());
-            JButton b;
-            b = new JButton("Acceder a la conversation "+((Integer) i).toString());
-            b.addActionListener(this);
-
-            p.add(b);
-            p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
-
-            Conteneur_Tickets.add(p);
-            }
-            Conteneur_Tickets.updateUI(); // rafraichi le panel*/
-            //lui.rafraichir(moi);
-            affichageArbreTicket();
-        } catch (IOException ex) {
-            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+        /*//Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
+        for(int i = 0; i<10; i++) {
+        JPanel p = new JPanel(new FlowLayout());
+        JButton b;
+        b = new JButton("Acceder a la conversation "+((Integer) i).toString());
+        b.addActionListener(this);
+        
+        p.add(b);
+        p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
+        
+        Conteneur_Tickets.add(p);
         }
+        Conteneur_Tickets.updateUI(); // rafraichi le panel*/
+        //lui.rafraichir(moi);
+        affichageArbreTicket();
         
     }//GEN-LAST:event_Bouton_actualiserActionPerformed
     
