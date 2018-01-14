@@ -4,6 +4,8 @@ import base_de_donnees.Commubdd;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -28,7 +30,7 @@ public class toClient implements Runnable {
 	
 	public void envoieUser(Utilisateur user) throws IOException {
             out = new PrintWriter(socket.getOutputStream());
-
+            
             out.println(user.getNom());
             out.flush();
             out.println(user.getPrenom());
@@ -46,10 +48,11 @@ public class toClient implements Runnable {
         public void receptionMessage() throws IOException, ClassNotFoundException, SQLException{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
-            
+            out.println("pret");
+            out.flush();
             String expediteur = in.readLine();
             String texte = in.readLine();
-            int idTicket = in.read();
+            int idTicket = Integer.parseInt(in.readLine());
             bdd.creationMessageBdd(idTicket, texte, expediteur);
             out.println("message cree");
             out.flush();
@@ -58,12 +61,15 @@ public class toClient implements Runnable {
         public void receptionTicket() throws IOException, ClassNotFoundException, SQLException{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
-            String titre = in.readLine();
-            String groupeE = in.readLine();
-            String groupeD = in.readLine();
-            int idTicket = bdd.newIdTicket();
-            out.println(idTicket);
+            out.println("pret");
             out.flush();
+            String titre = in.readLine();          
+            String groupeE = in.readLine();            
+            String groupeD = in.readLine();            
+            int idTicket = bdd.newIdTicket();
+            
+            out.println(Integer.toString(idTicket));
+            out.flush();           
             bdd.creationTicketBdd(idTicket, titre, groupeE, groupeD);
             out.println("ticket cree");
             out.flush();
@@ -94,8 +100,8 @@ public class toClient implements Runnable {
             boolean deco = false;
             try{
                 if(user == null) {
-			user = bdd.recupUser(login);
-			envoieUser(user);
+                    user = bdd.recupUser(login);
+                    envoieUser(user);
 		}
                 while(! deco){
                     deco = attenteOrdre();

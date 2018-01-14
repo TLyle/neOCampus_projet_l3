@@ -2,6 +2,8 @@ package Client;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import objet.Ticket;
 
 import objet.TypeUtilisateur;
@@ -20,10 +22,9 @@ public class ToServer implements Runnable {
 		socket = s;
 	}
 	
-	public Utilisateur receptionUser() throws IOException {
+	public Utilisateur receptionUser() throws IOException, ClassNotFoundException {
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
             String nom = in.readLine();
             String prenom = in.readLine();
             String user_name = in.readLine();
@@ -35,7 +36,6 @@ public class ToServer implements Runnable {
             switch(type) {
             case "etudiant":
                     user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.etudiant);
-                    System.out.println(user);
                     break;
             case "professeur":
                     user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.professeur);
@@ -43,18 +43,13 @@ public class ToServer implements Runnable {
             case "administrateur":
                     user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.administrateur);
                     break;
+            case "technique":
+                    user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.technique);
+                    break;
             }
             return user;
 	}
 	
-        public void envoieTicket(){
-            
-        }
-        
-        public void envoieMessage(){
-            
-        }
-        
         public void rafraichir(){
             
         }
@@ -71,16 +66,17 @@ public class ToServer implements Runnable {
             
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
+            System.out.println("debut envoie message");
             out.println("\\/ envoie message \\/");
             out.flush();
-            out.println(user.getUser_name());
-            System.out.println("ici");
-            out.flush();
-            out.println(message);
-            out.flush();
-            out.println(idTicket);
-            out.flush();
+            if(in.readLine().equals("pret")){
+                out.println(user.getUser_name());
+                out.flush();
+                out.println(message);
+                out.flush();
+                out.println(Integer.toString(idTicket));
+                out.flush();
+            }
             ok = in.readLine().equals("message cree");
             return ok;
         }
@@ -92,18 +88,22 @@ public class ToServer implements Runnable {
             
             out.println("\\/ envoie ticket \\/");
             out.flush();
-            out.println(titre);
-            out.flush();
-            out.println(groupeE);
-            out.flush();
-            out.println(groupeD);
-            out.flush();
-            int idticket = in.read();
+            if(in.readLine().equals("pret")){
+                out.println(titre);
+                out.flush();
+                out.println(groupeE);
+                out.flush();
+                out.println(groupeD);
+                out.flush();
+            }
+            int idticket = Integer.parseInt(in.readLine());
+            
             boolean ticketRecu = in.readLine().equals("ticket cree");
             
             user.addTicket(new Ticket(titre, groupeE, groupeD, idticket));
-            if(envoieMessage(message, user, idticket) && ticketRecu)
+            if(envoieMessage(message, user, idticket) && ticketRecu){
                 ok = true;
+            }
             return ok;
         }
         
@@ -111,7 +111,6 @@ public class ToServer implements Runnable {
 		try {
 			if(user == null) {
 				user = receptionUser();
-				System.out.println(user);
 			}
 					
 			out = new PrintWriter(socket.getOutputStream());
@@ -127,7 +126,9 @@ public class ToServer implements Runnable {
 		    
 		} catch (IOException e) {
 			System.err.println("Le serveur distant s'est d�connect� !");
-		}
+		} catch (ClassNotFoundException ex) {
+                Logger.getLogger(ToServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
 	}
 
 }

@@ -69,6 +69,9 @@ public class Commubdd {
 		case "Administrateur":
 			user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.administrateur);
 			break;
+                case "Service technique":
+                        user = new Utilisateur(nom, prenom, user_name, mail, groupe, TypeUtilisateur.technique);
+                        break;
 		}
 		return user;
 	}
@@ -168,7 +171,6 @@ public class Commubdd {
             int id = 1;
             boolean ok = false;
             Class.forName(driver);
-            List<Ticket> liste = new LinkedList<>();
             Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
             Statement state = conn.createStatement();
             
@@ -186,21 +188,19 @@ public class Commubdd {
         
         public void creationTicketBdd(int id, String titre, String groupeE, String groupeD) throws ClassNotFoundException, SQLException{
             Class.forName(driver);
-            List<Ticket> liste = new LinkedList<>();
             Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
             Statement state = conn.createStatement();
             
             String commande = "insert into ticket values ('"+id+"', '"+titre+"', '"+groupeE+"', '"+groupeD+"')";
-            ResultSet result = state.executeQuery(commande);
+            state.executeUpdate(commande);
         }
         
         public void creationMessageBdd(int id, String texte, String expediteur) throws ClassNotFoundException, SQLException{
             Class.forName(driver);
-            List<Ticket> liste = new LinkedList<>();
             Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
             Statement state = conn.createStatement();
             
             String commande = "insert into message values ('"+id+"', '"+expediteur+"','Recu', '"+texte+"')";
-            ResultSet result = state.executeQuery(commande);
+            state.executeUpdate(commande);
         }
 }

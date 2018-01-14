@@ -159,7 +159,7 @@ public class Creation_Ticket extends javax.swing.JFrame {
     private void Bouton_envoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_envoyerActionPerformed
         titre = "";
         message = "";
-        groupe = "TDA2";
+        groupe = "Electricien";
         titre = Saisie_titre.getText();
         message = Saisie_texte.getText();
         ToServer serv = new ToServer(socket);
