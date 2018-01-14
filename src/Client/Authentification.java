@@ -67,7 +67,6 @@ public class Authentification extends javax.swing.JFrame {
         Bouton_valider_ip = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(tailleEcranAdapté());
 
         Conteneur_central.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -196,6 +195,8 @@ public class Authentification extends javax.swing.JFrame {
             try {
                 new Acceuil_Client(socket).setVisible(true);
             } catch (IOException ex) {
+                Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
             }
             this.dispose();

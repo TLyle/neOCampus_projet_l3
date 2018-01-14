@@ -30,8 +30,8 @@ public class Ticket {
         return groupeDestinataire;
     }
 
-    public void setGroupeEmetteur(String groupeEmetteur) {
-        this.groupeEmetteur = groupeEmetteur;
+    public String getGroupeEmetteur() {
+        return groupeEmetteur;
     }
 
     public int getIdTicket() {
@@ -59,7 +59,8 @@ public class Ticket {
     }
  
     public void addMessage(Message mess){
-        message.add(mess);
+        if(!message.contains(mess))
+            message.add(mess);
     }
  
 }

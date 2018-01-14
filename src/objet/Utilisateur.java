@@ -29,8 +29,19 @@ public class Utilisateur {
 		return nom;
 	}
 	
-	public TypeUtilisateur getType() {
-		return type;
+	public String getType() {
+            switch(this.type){
+                case etudiant:
+                    return "etudiant";
+                case professeur:
+                    return "professeur";
+                case administrateur:
+                    return "administrateur";
+                case technique:
+                    return "technique";
+                default:
+                    return "rien";
+            }
 	}
 	
 	public String getUser_name() {
@@ -45,6 +56,20 @@ public class Utilisateur {
             if(list.contains(ticket))
                 list.remove(ticket);
             list.add(ticket);
+        }
+        
+        public Ticket hasTicket(int id){
+            Ticket tick = null;
+            boolean ok = false;
+            int i=0;
+            while(i<list.size() && !ok){
+                if(list.get(i).getIdTicket() == id){
+                    ok = true;
+                    tick = list.get(i);
+                }
+                i++;
+            }
+            return tick;
         }
         
 	@Override

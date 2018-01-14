@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objet.Message;
 import objet.Ticket;
 
 import objet.TypeUtilisateur;
@@ -50,15 +51,64 @@ public class ToServer implements Runnable {
             return user;
 	}
 	
-        public void rafraichir(){
-            
-        }
-        //TODO finir envoie d'ordre
-        public void envoieOrdre(String ordre) throws IOException{
+        public void receptionDesMessages(Utilisateur user, Ticket ticket) throws IOException{
             out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
-            out.println(ordre);
+            out.println("\\/ message \\/");
             out.flush();
+            String fin = in.readLine();
+            while(! fin.equals("fin")){
+                out.println("pret");
+                out.flush();
+                String etat = in.readLine();
+                String expediteur = in.readLine();
+                String texte = in.readLine();
+                ticket.addMessage(new Message(expediteur, etat, texte));
+                fin = in.readLine();
+            }
+        }
+        
+        public void receptionDuTickets(Utilisateur user) throws IOException{
+            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        
+            out.println("\\/ ticket \\/");
+            out.flush();
+            out.println("pret");
+            out.flush();
+            String groupeD = in.readLine();
+            String titre = in.readLine();
+            String groupeE = in.readLine();
+            int idTicket = Integer.parseInt(in.readLine());
+            Ticket tick = new Ticket(titre, groupeE, groupeE, idTicket);
+            user.addTicket(tick);
+            receptionDesMessages(user, tick);
+        }
+        
+        public void rafraichir(Utilisateur user) throws IOException{
+            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            out.println("\\/ rafraichir \\/");
+            out.flush();
+            if(in.readLine().equals("pret")){
+                out.println(user.getType());
+                out.flush();
+                out.println(user.getGroupe());
+                out.flush();
+            }
+            String ok = "non";
+            int idAChercher;
+            while(ok.equals("non")){
+                idAChercher = Integer.parseInt(in.readLine());
+                Ticket tickTrouve = user.hasTicket(idAChercher);
+                if(tickTrouve == null){
+                    receptionDuTickets(user);
+                }else{
+                    receptionDesMessages(user, tickTrouve);
+                }
+            }
         }
         
         public boolean envoieMessage(String message, Utilisateur user, int idTicket) throws IOException{
@@ -66,7 +116,7 @@ public class ToServer implements Runnable {
             
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("debut envoie message");
+            
             out.println("\\/ envoie message \\/");
             out.flush();
             if(in.readLine().equals("pret")){
@@ -79,6 +129,12 @@ public class ToServer implements Runnable {
             }
             ok = in.readLine().equals("message cree");
             return ok;
+        }
+        
+        public void deco() throws IOException{
+            out = new PrintWriter(socket.getOutputStream());
+            out.println("\\/ deconnexion \\/");
+            out.flush();
         }
         
         public boolean envoieTicket(String titre, String groupeE, String groupeD, String message, Utilisateur user) throws IOException{

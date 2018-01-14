@@ -9,6 +9,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.List;
+import objet.Message;
+import objet.Ticket;
 
 import objet.Utilisateur;
 
@@ -75,7 +78,78 @@ public class toClient implements Runnable {
             out.flush();
         }
         
-        //TODO finir reception d'ordre
+        public void envoieListeMessage(int id) throws ClassNotFoundException, SQLException, IOException{
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+            
+            List<Message> l_message = bdd.getListMessage(id);
+            out.println("debut");
+            out.flush();
+            for(int i=0; i <l_message.size(); i++){
+                Message mess = l_message.get(i);
+                if(in.readLine().equals("pret")){
+                    out.println(mess.getEtat());
+                    out.flush();
+                    out.println(mess.getExpediteur());
+                    out.flush();
+                    out.println(mess.getTexte());
+                    out.flush();
+                    if(i <l_message.size())
+                        out.println("continu");
+                    else
+                        out.println("fin");
+                    out.flush();
+                }
+            }           
+        }
+        
+        public void envoieTicket(Ticket tick) throws IOException, ClassNotFoundException, SQLException{
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+            
+            if(in.readLine().equals("pret")){
+                out.println(tick.getGroupeDestinataire());
+                out.flush();
+                out.println(tick.getTitre());
+                out.flush();
+                out.println(tick.getGroupeEmetteur());
+                out.flush(); 
+                out.println(Integer.toString(tick.getIdTicket()));
+                out.flush();
+            }
+            if(in.readLine().equals("\\/ message \\/"))
+                envoieListeMessage(tick.getIdTicket());
+        }
+        
+        public void receptionRafraichir() throws IOException, ClassNotFoundException, SQLException{
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+            
+            out.println("pret");
+            out.flush();
+            String type = in.readLine();
+            String groupe = in.readLine();
+            List<String> list;
+            if (type.equals("etudiant"))
+                list = bdd.getListGrp("technique");
+            else
+                list = bdd.getListGrp("etude");
+            List<Ticket> l_ticket; 
+            for(String grp : list){
+                l_ticket = bdd.getListTicket(groupe, grp);
+                for(Ticket tick : l_ticket){
+                    int id = tick.getIdTicket();
+                    out.println(Integer.toString(id));
+                    out.flush();
+                    if(in.readLine().equals("\\/ message \\/")){
+                        envoieListeMessage(id);
+                    } else {
+                        envoieTicket(tick);
+                    }
+                }
+            }
+        }
+        
         public boolean attenteOrdre() throws IOException, SQLException, ClassNotFoundException{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
@@ -88,6 +162,7 @@ public class toClient implements Runnable {
                     receptionMessage();
                     break;
                 case "\\/ rafraichir \\/":
+                    receptionRafraichir();
                     break;
                 case "\\/ deconnexion \\/":
                     return true;

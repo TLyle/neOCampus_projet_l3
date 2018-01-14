@@ -94,6 +94,13 @@ public class Commubdd {
             return cpt;
         }*/
         
+        /**
+         * 
+         * @param "etude" => liste groupe technique
+         * @return liste de String de groupe
+         * @throws ClassNotFoundException
+         * @throws SQLException 
+         */
         public List getListGrp(String categorie) throws ClassNotFoundException, SQLException{
             Class.forName(driver);
             List<String> liste = new LinkedList<>();
@@ -202,5 +209,24 @@ public class Commubdd {
             
             String commande = "insert into message values ('"+id+"', '"+expediteur+"','Recu', '"+texte+"')";
             state.executeUpdate(commande);
+        }
+        
+        public List getListMessage(int idTicket) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            List<Message> liste = new LinkedList<>();
+            Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp);
+            Statement state = conn.createStatement();
+            
+            String commande = "SELECT * FROM message WHERE (Ticket = '"+idTicket+"')";
+            ResultSet result = state.executeQuery(commande);
+            
+            while(result.next()){
+                String expediteur = result.getObject(2).toString();
+                String etat = result.getObject(3).toString();
+                String texte = result.getObject(4).toString();
+                liste.add(new Message(expediteur, etat, texte));
+            }
+            
+            return liste;
         }
 }

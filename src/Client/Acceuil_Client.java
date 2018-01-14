@@ -7,7 +7,6 @@ package Client;
 
 import base_de_donnees.Commubdd;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -15,16 +14,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import objet.Utilisateur;
@@ -42,12 +35,13 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
      */
     ArrayList<Integer> listeDeTickets; //TODO remplacer Integer par Ticket
     
-    public Acceuil_Client(Socket s) throws IOException {
+    public Acceuil_Client(Socket s) throws IOException, ClassNotFoundException {
         initComponents();
         socket = s;
         lui = new ToServer(socket);
         moi = lui.receptionUser();
         Donnees_utilisateur.setText(moi.toString());
+        affichageArbreTicket();
     }
     
     private Dimension tailleEcranAdapté(){
@@ -233,6 +227,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
     private void Bouton_deconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_deconnectionActionPerformed
         try {
+            lui.deco();
             socket.close();
             new Authentification().setVisible(true);
         } catch (IOException ex) {
@@ -242,8 +237,9 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_Bouton_deconnectionActionPerformed
 
     private void Bouton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_actualiserActionPerformed
-        /*//Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
-        for(int i = 0; i<10; i++) {
+        try {
+            /*//Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
+            for(int i = 0; i<10; i++) {
             JPanel p = new JPanel(new FlowLayout());
             JButton b;
             b = new JButton("Acceder a la conversation "+((Integer) i).toString());
@@ -253,8 +249,17 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
             p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
 
             Conteneur_Tickets.add(p);
+            }
+            Conteneur_Tickets.updateUI(); // rafraichi le panel*/
+            //lui.rafraichir(moi);
+            affichageArbreTicket();
+        } catch (IOException ex) {
+            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Conteneur_Tickets.updateUI(); // rafraichi le panel*/
+        
+    }//GEN-LAST:event_Bouton_actualiserActionPerformed
+    
+    private void affichageArbreTicket(){
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         DefaultMutableTreeNode professeur = new DefaultMutableTreeNode("Professeur");
         DefaultMutableTreeNode etudiant = new DefaultMutableTreeNode("Etudiant");
@@ -314,10 +319,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         arbre_tickets.setRootVisible(true);
         arbre_tickets.setShowsRootHandles(true);
         Conteneur_Tickets.updateUI();
-    }//GEN-LAST:event_Bouton_actualiserActionPerformed
-
+    }
+    
     private void Bouton_creer_ticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creer_ticketActionPerformed
         new Creation_Ticket(socket, moi).setVisible(true);
+        affichageArbreTicket();
     }//GEN-LAST:event_Bouton_creer_ticketActionPerformed
 
     /**
@@ -353,6 +359,8 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
                 try {
                     new Acceuil_Client(socket).setVisible(true);
                 } catch (IOException ex) {
+                    Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
