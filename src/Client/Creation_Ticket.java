@@ -9,21 +9,18 @@ import base_de_donnees.Commubdd;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-<<<<<<< Updated upstream
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import objet.Utilisateur;
-=======
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
->>>>>>> Stashed changes
 
 /**
  *
