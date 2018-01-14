@@ -5,7 +5,6 @@
  */
 package Client;
 
-import base_de_donnees.Commubdd;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -15,12 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import objet.Utilisateur;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JComboBox;
 
 /**
  *
@@ -39,20 +32,6 @@ public class Creation_Ticket extends javax.swing.JFrame {
         this.socket = socket;
         this.user = user;
         initComponents();
-        Commubdd commubdd = new Commubdd();
-        List<String> liste_des_groupes;
-        JComboBox combo_box = new JComboBox<>();
-        try {
-            liste_des_groupes = commubdd.getListGrp("etude");
-            for(String nomGroupe : liste_des_groupes){
-                combo_box.addItem(nomGroupe);
-            }
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(Creation_Ticket.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Conteneur_Combobox.add(combo_box);
-        Conteneur_Combobox.setVisible(true);
-        Conteneur_Combobox.updateUI();
     }
     
     private Dimension tailleEcranAdapté(){
@@ -77,17 +56,10 @@ public class Creation_Ticket extends javax.swing.JFrame {
         Bouton_retour = new javax.swing.JButton();
         Bouton_envoyer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-<<<<<<< Updated upstream
         Saisie_titre = new javax.swing.JTextField();
         Choix_groupe = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         Saisie_texte = new java.awt.TextArea();
-=======
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        textArea1 = new java.awt.TextArea();
-        Conteneur_Combobox = new javax.swing.JPanel();
->>>>>>> Stashed changes
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -118,10 +90,6 @@ public class Creation_Ticket extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Groupe :");
 
-        Conteneur_Combobox.setBackground(new java.awt.Color(255, 51, 51));
-        Conteneur_Combobox.setForeground(new java.awt.Color(255, 51, 51));
-        Conteneur_Combobox.setLayout(new javax.swing.BoxLayout(Conteneur_Combobox, javax.swing.BoxLayout.LINE_AXIS));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -136,24 +104,14 @@ public class Creation_Ticket extends javax.swing.JFrame {
                         .addComponent(Bouton_retour, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< Updated upstream
                     .addComponent(Saisie_titre)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addComponent(Choix_groupe, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(369, Short.MAX_VALUE))))
             .addComponent(Saisie_texte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-=======
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(Conteneur_Combobox, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
->>>>>>> Stashed changes
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,13 +119,8 @@ public class Creation_Ticket extends javax.swing.JFrame {
                 .addComponent(Bouton_retour)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< Updated upstream
                     .addComponent(Choix_groupe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-=======
-                    .addComponent(jLabel2)
-                    .addComponent(Conteneur_Combobox, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
->>>>>>> Stashed changes
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Saisie_titre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,13 +214,9 @@ public class Creation_Ticket extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Bouton_envoyer;
     private javax.swing.JButton Bouton_retour;
-<<<<<<< Updated upstream
     private javax.swing.JComboBox<String> Choix_groupe;
     private java.awt.TextArea Saisie_texte;
     private javax.swing.JTextField Saisie_titre;
-=======
-    private javax.swing.JPanel Conteneur_Combobox;
->>>>>>> Stashed changes
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
