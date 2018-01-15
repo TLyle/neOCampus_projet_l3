@@ -14,21 +14,33 @@ import objet.TypeUtilisateur;
 import objet.Utilisateur;
 
 
-public class ToServer implements Runnable {
+public class ToServer{// implements Runnable {
 
 	private Socket socket;
 	private PrintWriter out = null;
 	private BufferedReader in = null;
-	private Thread th1, th2;
 	private Utilisateur user = null;
 	
-	public ToServer(Socket s){
+	public ToServer(Socket s) throws IOException{
 		socket = s;
+                out = new PrintWriter(socket.getOutputStream());
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 	
-	public Utilisateur receptionUser() throws IOException, ClassNotFoundException {
+        public boolean authen(String username, String password) throws IOException{
             out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));	
+                        
+            out.println(username);
+            out.flush();
+            
+            out.println(password);
+            out.flush();
+            
+            return (in.readLine().equals("connecte"));
+        }
+        
+	public Utilisateur receptionUser() throws IOException, ClassNotFoundException {
             String nom = in.readLine();
             String prenom = in.readLine();
             String user_name = in.readLine();
@@ -55,9 +67,6 @@ public class ToServer implements Runnable {
 	}
 	
         public void receptionDesMessages(Utilisateur user, Ticket ticket) throws IOException{
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
             String fin = "non";
             while(! fin.equals("fin")){
                 out.println("pret");
@@ -72,9 +81,6 @@ public class ToServer implements Runnable {
         }
         
         public void receptionDuTickets(Utilisateur user) throws IOException{
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
             out.println("pret");
             out.flush();
             String groupeD = in.readLine();
@@ -88,9 +94,6 @@ public class ToServer implements Runnable {
         }
         
         public void rafraichir(Utilisateur user) throws IOException{
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
             out.println("\\/ rafraichir \\/");
             out.flush();
             if(in.readLine().equals("pret")){
@@ -117,6 +120,13 @@ public class ToServer implements Runnable {
             }
         }
         
+        /**
+         * Cette fonction est la deuxième version du rafraichissement parce que
+         * la première ne fonctionnait pas
+         * @param user
+         * @throws ClassNotFoundException
+         * @throws SQLException 
+         */
         public void rafraichir2(Utilisateur user) throws ClassNotFoundException, SQLException{
             Commubdd bdd = new Commubdd();
             List<String> list_groupe;
@@ -127,31 +137,16 @@ public class ToServer implements Runnable {
             List<Ticket> list_ticket;
             for(String grp: list_groupe){
                 list_ticket = bdd.getListTicket(user.getGroupe(), grp);
-                for(Ticket tick: list_ticket){
-                    List<Message> list_mess = bdd.getListMessage(tick.getIdTicket());
-                    for(Message mess: list_mess){
-                        tick.addMessage(mess);
-                    }
+                for(Ticket tick: list_ticket)
                     user.addTicket(tick);
-                }
                 list_ticket = bdd.getListTicket(grp, user.getGroupe());
-                for(Ticket tick: list_ticket){
-                    List<Message> list_mess = bdd.getListMessage(tick.getIdTicket());
-                    for(Message mess: list_mess){
-                        tick.addMessage(mess);
-                    }
+                for(Ticket tick: list_ticket)
                     user.addTicket(tick);
-                }
             }
-            System.out.println("Je suis sorti");
         }
         
         public boolean envoieMessage(String message, Utilisateur user, int idTicket) throws IOException{
             boolean ok;
-            
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
             out.println("\\/ envoie message \\/");
             out.flush();
             if(in.readLine().equals("pret")){
@@ -174,9 +169,6 @@ public class ToServer implements Runnable {
         
         public boolean envoieTicket(String titre, String groupeE, String groupeD, String message, Utilisateur user) throws IOException{
             boolean ok = false;
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
             out.println("\\/ envoie ticket \\/");
             out.flush();
             if(in.readLine().equals("pret")){
@@ -197,30 +189,5 @@ public class ToServer implements Runnable {
             }
             return ok;
         }
-        
-	public void run() {
-		try {
-			if(user == null) {
-				user = receptionUser();
-			}
-					
-			out = new PrintWriter(socket.getOutputStream());
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
-			
-			th1 = new Thread(new Emission(out));
-			th1.start();
-			th2 = new Thread(new Reception(in));
-			th2.start();
-		
-		   
-		    
-		} catch (IOException e) {
-			System.err.println("Le serveur distant s'est d�connect� !");
-		} catch (ClassNotFoundException ex) {
-                Logger.getLogger(ToServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-	}
-
 }
 

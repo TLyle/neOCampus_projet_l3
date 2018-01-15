@@ -2,6 +2,8 @@ package Serveur;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Accepter_connexion implements Runnable{
@@ -26,7 +28,7 @@ public class Accepter_connexion implements Runnable{
                 t1.start();
 
             }
-        } catch (IOException e) {			
+        } catch (IOException e) {
             System.err.println("Erreur serveur");
         }
 

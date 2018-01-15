@@ -31,7 +31,7 @@ public class Serveur implements Runnable{
 			t.start();
 			
 		} catch (IOException e) {
-			System.err.println("Le port "+ss.getLocalPort()+" est d�j� utilis� !");
+			System.err.println("Le port "+ss.getLocalPort()+" est déjà utilisé !");
 		}
 	
 	}*/

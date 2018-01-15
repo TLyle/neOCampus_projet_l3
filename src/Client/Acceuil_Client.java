@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import objet.Utilisateur;
 
 /**
@@ -41,7 +42,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         lui = new ToServer(socket);
         moi = lui.receptionUser();
         Donnees_utilisateur.setText(moi.toString());
-        affichageArbreTicket();
+        try {
+            arbreTicket();
+        } catch (SQLException ex) {
+            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private Dimension tailleEcranAdapté(){
@@ -252,14 +257,42 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
             }
             Conteneur_Tickets.updateUI(); // rafraichi le panel*/
             lui.rafraichir2(moi);
+            moi.affichageTicket();
+            arbreTicket();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        affichageArbreTicket();
-        
+        }       
     }//GEN-LAST:event_Bouton_actualiserActionPerformed
+    
+    private void arbreTicket() throws ClassNotFoundException, SQLException{
+        DefaultMutableTreeNode root;
+        List<String> l_groupe;
+        Commubdd bdd = new Commubdd();
+        boolean etud = moi.getType().equals("etudiant");
+        if(etud){
+            root = new DefaultMutableTreeNode("Etudiant");
+            l_groupe = bdd.getListGrp("technique");
+        }else{
+            root = new DefaultMutableTreeNode("Service technique");
+            l_groupe = bdd.getListGrp("etude");
+        }
+        boolean pasDeFeuille = true;
+        DefaultMutableTreeNode feuilleCourante;
+        for(String nomGroupe : l_groupe){
+            root.add(new DefaultMutableTreeNode(nomGroupe));
+            if(pasDeFeuille)
+                feuilleCourante = root.getFirstLeaf();
+            else
+                feuilleCourante = root.getNextLeaf();
+        }
+        JTree arbre_tickets= new JTree(root); 
+        Conteneur_Tickets.add(arbre_tickets);
+        arbre_tickets.setRootVisible(true);
+        arbre_tickets.setShowsRootHandles(true);
+        Conteneur_Tickets.updateUI();
+    }
     
     private void affichageArbreTicket(){
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
@@ -324,7 +357,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     }
     
     private void Bouton_creer_ticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creer_ticketActionPerformed
-        new Creation_Ticket(socket, moi).setVisible(true);
+        new Creer_ticket(socket, moi).setVisible(true);
         affichageArbreTicket();
     }//GEN-LAST:event_Bouton_creer_ticketActionPerformed
 

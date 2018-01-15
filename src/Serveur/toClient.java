@@ -188,31 +188,11 @@ public class toClient implements Runnable {
                 while(! deco){
                     deco = attenteOrdre();
                 }
+                socket.close();
+                System.out.println(login +" s'//est déconnecté");
             }catch (IOException | ClassNotFoundException | SQLException e) {
                 System.err.println(login +" s'est déconnecté ");
             }
         }
-        
-        /*@Override
-	public void run() {
-		try {
-		
-		if(user == null) {
-			user = bdd.recupUser(login);
-			envoieUser(user);
-		}
-			
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(socket.getOutputStream());
-		
-		th1 = new Thread(new Reception(in,login));
-		th1.start();
-		th2 = new Thread(new Emission(out));
-		th2.start();
-		
-		} catch (IOException | ClassNotFoundException | SQLException e) {
-			System.err.println(login +" s'est déconnecté ");
-		}
-        }*/
 }
 

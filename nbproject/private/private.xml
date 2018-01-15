@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Doc_Ash/Fac/ProjetS5/neOCampus_projet_l3/src/Serveur/Serveur.java</file>
-            <file>file:/D:/Doc_Ash/Fac/ProjetS5/neOCampus_projet_l3/src/Serveur/Acceuil_Server.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Client/Acceuil_Client.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Serveur/Serveur.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Serveur/toClient.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Serveur/Accepter_connexion.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Serveur/Authentification.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/objet/Message.java</file>
+            <file>file:/C:/Users/LYLE_/Documents/02%20-%20Fac/L3/projetS5/src/Client/ToServer.java</file>
         </group>
     </open-files>
 </project-private>

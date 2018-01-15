@@ -43,14 +43,9 @@ public class Authentification implements Runnable {
 			t2 = new Thread(new toClient(socket,login));
 			t2.start();
 			
-		} catch (IOException e) {
-			
-			System.err.println(login+" ne r�pond pas !");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException | ClassNotFoundException | SQLException e) {
+			System.err.println(login+" ne répond pas !");
+                }        
 	}
 	
 }

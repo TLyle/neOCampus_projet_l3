@@ -176,33 +176,33 @@ public class Authentification extends javax.swing.JFrame {
 
     private void Bouton_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_connexionActionPerformed
         try {
-            this.socket = new Socket(ip_distance, 9633);
-        } catch (IOException ex) {
-            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        username = Entree_Nom_Utilisateur.getText();
-        char mdp[] = Entree_mdp.getPassword();
-        for (char c : mdp)
-            password+=c;
-        boolean connection = false;
-        Connexion co = new Connexion(socket);
-        try {
-            connection = co.authen(username, password);
-        } catch (IOException ex) {
-            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(connection){
             try {
-                new Acceuil_Client(socket).setVisible(true);
+                this.socket = new Socket(ip_distance, 9633);
             } catch (IOException ex) {
                 Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.dispose();
-        }else{
-            username = "";
-            password = "";
+            username = Entree_Nom_Utilisateur.getText();
+            char mdp[] = Entree_mdp.getPassword();
+            for (char c : mdp)
+                password+=c;
+            boolean connection = false;
+            ToServer co = new ToServer(socket);
+            connection = co.authen(username, password);
+            if(connection){
+                try {
+                    new Acceuil_Client(socket).setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.dispose();
+            }else{
+                username = "";
+                password = "";
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_Bouton_connexionActionPerformed
 
