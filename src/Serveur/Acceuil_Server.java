@@ -147,7 +147,7 @@ public class Acceuil_Server extends javax.swing.JFrame {
     }//GEN-LAST:event_Bouton_utilisateursActionPerformed
 
     private void Bouton_groupesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_groupesActionPerformed
-        // TODO add your handling code here:
+        new Afficher_groupe().setVisible(true);
     }//GEN-LAST:event_Bouton_groupesActionPerformed
 
     /**
