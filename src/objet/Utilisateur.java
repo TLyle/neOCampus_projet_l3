@@ -76,4 +76,13 @@ public class Utilisateur {
 	public String toString() {
 		return("Nom "+nom+"\nPrenom "+prenom+"\nmail "+mail+"\nuser_name "+user_name+"\ngroupe "+groupe+"\ntype "+type);
 	}
+        
+        public void affichageTicket(){
+            for(Ticket tick: list){
+                System.out.println(tick);
+                for(Message mess: tick.getMessage()){
+                    System.out.println(mess);
+                }
+            }
+        }
 }

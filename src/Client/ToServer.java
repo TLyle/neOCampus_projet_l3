@@ -132,6 +132,7 @@ public class ToServer implements Runnable {
                     for(Message mess: list_mess){
                         tick.addMessage(mess);
                     }
+                    user.addTicket(tick);
                 }
                 list_ticket = bdd.getListTicket(grp, user.getGroupe());
                 for(Ticket tick: list_ticket){
@@ -139,8 +140,10 @@ public class ToServer implements Runnable {
                     for(Message mess: list_mess){
                         tick.addMessage(mess);
                     }
+                    user.addTicket(tick);
                 }
-            }             
+            }
+            System.out.println("Je suis sorti");
         }
         
         public boolean envoieMessage(String message, Utilisateur user, int idTicket) throws IOException{
