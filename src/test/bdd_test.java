@@ -24,7 +24,6 @@ public class bdd_test {
                 for(int i =0; i< list.size(); i++){
                     list.get(i).afficherMessage();
                 }
-                bdd.updateUtilisateur("modif", "modif", util.getUser_name(), "modif", "modif", "Professeur", "TDA3");
-                bdd.creerGroupe("newgrp", "Etude");
+                System.out.println(bdd.getListUser());
         }
 }

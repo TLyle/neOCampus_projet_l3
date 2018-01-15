@@ -74,6 +74,20 @@ public class Commubdd {
             return user;
 	}
         
+        public List getListUser() throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); 
+            Statement state = conn.createStatement();
+            List<Utilisateur> list = new LinkedList<>();
+            ResultSet result = state.executeQuery("SELECT * FROM utilisateur");
+                
+            while(result.next()){
+                Utilisateur user = recupUser(result.getObject(1).toString());
+                list.add(user);
+            }
+            return list;    
+        }
+        
         /**
          * 
          * @param "etude" => liste groupe technique
@@ -245,6 +259,24 @@ public class Commubdd {
             Class.forName(driver);
             try (Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); Statement state = conn.createStatement()) {
                 String commande = "insert into groupe values ('"+nom+"', '"+categorie+"')";
+                
+                state.executeUpdate(commande);
+            }
+        }
+        
+        public void supprimerGroupe(String nom) throws SQLException, ClassNotFoundException{
+            Class.forName(driver);
+            try (Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); Statement state = conn.createStatement()) {
+                String commande = "delete from groupe where Nom = '"+nom+"'";
+                
+                state.executeUpdate(commande);
+            }
+        }
+        
+        public void supprimerUtilisateur(String username) throws SQLException, ClassNotFoundException{
+            Class.forName(driver);
+            try (Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); Statement state = conn.createStatement()) {
+                String commande = "delete from utilisateur where Username = '"+username+"'";
                 
                 state.executeUpdate(commande);
             }
