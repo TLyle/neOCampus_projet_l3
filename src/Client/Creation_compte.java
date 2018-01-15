@@ -155,12 +155,29 @@ public class Creation_compte extends javax.swing.JFrame {
     }//GEN-LAST:event_RetourActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
+        mail = Entree_mail.getText();
+        char mdp[] = Entree_mdp.getPassword();
+        for (char c : mdp)
+            password+=c;
+        mdp = Entree_mdp_verification.getPassword();
+        for (char c : mdp)
+            password_verif+=c;
+        username = Entree_nom_utilisateur.getText();
+        if(password != password_verif){
+            Entree_mail.setText("");
+            Entree_mdp.setText("");
+            Entree_mdp_verification.setText("");
+            Entree_nom_utilisateur.setText("");
+            new Affichage_erreur("Les mots de passe ne sont pas identiques").setVisible(true);
+        }else{
+            //TODO créer le compte avec username, password et mail
+            try {
             new Authentification().setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(Creation_compte.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void Entree_mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mailActionPerformed
@@ -174,7 +191,7 @@ public class Creation_compte extends javax.swing.JFrame {
     }//GEN-LAST:event_Entree_mdpActionPerformed
 
     private void Entree_mdp_verificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_mdp_verificationActionPerformed
-char mdp[] = Entree_mdp.getPassword();
+        char mdp[] = Entree_mdp.getPassword();
         for (char c : mdp)
             password_verif +=c;
     }//GEN-LAST:event_Entree_mdp_verificationActionPerformed

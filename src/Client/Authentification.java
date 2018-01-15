@@ -61,7 +61,6 @@ public class Authentification extends javax.swing.JFrame {
         Bouton_connexion = new javax.swing.JButton();
         Nom_utilisateur = new javax.swing.JLabel();
         Entree_Nom_Utilisateur = new javax.swing.JTextField();
-        Bouton_mdp_oublié = new javax.swing.JButton();
         Entree_mdp = new javax.swing.JPasswordField();
         Bouton_local = new javax.swing.JButton();
         Entree_ip = new javax.swing.JTextField();
@@ -101,14 +100,6 @@ public class Authentification extends javax.swing.JFrame {
             }
         });
         Conteneur_central.add(Entree_Nom_Utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 209, -1));
-
-        Bouton_mdp_oublié.setText("Mot de passe oublié");
-        Bouton_mdp_oublié.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bouton_mdp_oubliéActionPerformed(evt);
-            }
-        });
-        Conteneur_central.add(Bouton_mdp_oublié, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 140, -1));
 
         Entree_mdp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Entree_mdp.addActionListener(new java.awt.event.ActionListener() {
@@ -170,11 +161,6 @@ public class Authentification extends javax.swing.JFrame {
         new Creation_compte().setVisible(true); // lien vers nouvelle fenetre
         this.dispose();
     }//GEN-LAST:event_Bouton_creation_compteActionPerformed
-
-    private void Bouton_mdp_oubliéActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_mdp_oubliéActionPerformed
-        new Mdp_Oublie().setVisible(true); // lien vers nouvelle fenetre
-        this.dispose();
-    }//GEN-LAST:event_Bouton_mdp_oubliéActionPerformed
 
     private void Bouton_connexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_connexionActionPerformed
         try {
@@ -261,7 +247,6 @@ public class Authentification extends javax.swing.JFrame {
     private javax.swing.JButton Bouton_connexion;
     private javax.swing.JButton Bouton_creation_compte;
     private javax.swing.JButton Bouton_local;
-    private javax.swing.JButton Bouton_mdp_oublié;
     private javax.swing.JButton Bouton_valider_ip;
     private javax.swing.JPanel Conteneur_central;
     private javax.swing.JTextField Entree_Nom_Utilisateur;
