@@ -179,10 +179,8 @@ public class Acceuil_Server extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Acceuil_Server().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Acceuil_Server().setVisible(true);
         });
     }
 

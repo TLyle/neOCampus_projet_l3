@@ -5,9 +5,16 @@
  */
 package Serveur;
 
+import base_de_donnees.Commubdd;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objet.Message;
+import objet.Utilisateur;
 
 /**
  *
@@ -22,6 +29,11 @@ public class Gestionnaire_Utilisateurs extends javax.swing.JFrame {
     public Gestionnaire_Utilisateurs() {
         recherche = "";
         initComponents();
+        try {
+            afficher_liste();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Gestionnaire_Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private Dimension tailleEcranAdapté(){
@@ -43,107 +55,134 @@ public class Gestionnaire_Utilisateurs extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        Bouton_fermer = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Liste_utilisateurs = new javax.swing.JList<>();
-        Bouton_ajouter = new javax.swing.JButton();
-        Bouton_supprimer = new javax.swing.JButton();
-        Entree_rechercher = new javax.swing.JTextField();
-        Bouton_Rechercher = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        aff_users = new javax.swing.JTextArea();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        Entree_utilisateur = new javax.swing.JTextField();
+        Bouton_selectionner = new javax.swing.JButton();
+        Bouton_retour = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
 
-        Bouton_fermer.setText("Fermer");
-        Bouton_fermer.addActionListener(new java.awt.event.ActionListener() {
+        jPanel2.setBackground(new java.awt.Color(255, 51, 51));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        aff_users.setColumns(20);
+        aff_users.setRows(5);
+        jScrollPane2.setViewportView(aff_users);
+
+        jPanel2.add(jScrollPane2, java.awt.BorderLayout.PAGE_START);
+
+        jPanel3.setBackground(new java.awt.Color(153, 255, 153));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setText("Utilisateur selectionné : ");
+
+        Entree_utilisateur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bouton_fermerActionPerformed(evt);
+                Entree_utilisateurActionPerformed(evt);
             }
         });
 
-        jScrollPane1.setViewportView(Liste_utilisateurs);
-
-        Bouton_ajouter.setText("Ajouter");
-
-        Bouton_supprimer.setText("Supprimer");
-        Bouton_supprimer.addActionListener(new java.awt.event.ActionListener() {
+        Bouton_selectionner.setText("Selectionner");
+        Bouton_selectionner.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bouton_supprimerActionPerformed(evt);
+                Bouton_selectionnerActionPerformed(evt);
             }
         });
 
-        Bouton_Rechercher.setText("Rechercher");
-        Bouton_Rechercher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bouton_RechercherActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(Entree_utilisateur, javax.swing.GroupLayout.PREFERRED_SIZE, 945, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(47, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Bouton_selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(56, 56, 56)
+                .addComponent(Entree_utilisateur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(106, 106, 106)
+                .addComponent(Bouton_selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(157, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(Bouton_ajouter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Bouton_supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(Bouton_fermer)
-                .addGap(117, 117, 117)
-                .addComponent(Entree_rechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Bouton_Rechercher, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Bouton_fermer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Entree_rechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Bouton_Rechercher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Bouton_supprimer, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                    .addComponent(Bouton_ajouter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        Bouton_retour.setText("Retour");
+        Bouton_retour.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_retourActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(366, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(80, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(370, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Bouton_retour)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(168, Short.MAX_VALUE)
+                .addComponent(Bouton_retour)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Bouton_supprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_supprimerActionPerformed
+    private void Entree_utilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_utilisateurActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_Bouton_supprimerActionPerformed
+    }//GEN-LAST:event_Entree_utilisateurActionPerformed
 
-    private void Bouton_fermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_fermerActionPerformed
+    private void Bouton_selectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_selectionnerActionPerformed
+        Commubdd comu = new Commubdd();
+        try {
+            new Changer_user(comu.recupUser(Entree_utilisateur.getText())).setVisible(true);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Gestionnaire_Utilisateurs.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_Bouton_selectionnerActionPerformed
+
+    private void Bouton_retourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_retourActionPerformed
         this.dispose();
-    }//GEN-LAST:event_Bouton_fermerActionPerformed
-
-    private void Bouton_RechercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_RechercherActionPerformed
-        recherche = Entree_rechercher.getText();
-        // if appartient(recherche) then new afficher_utilisateur(ID).setVisible(true);
-        System.out.println(recherche);
-        new Afficher_utilisateur(recherche).setVisible(true);
-    }//GEN-LAST:event_Bouton_RechercherActionPerformed
+    }//GEN-LAST:event_Bouton_retourActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,21 +212,28 @@ public class Gestionnaire_Utilisateurs extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Gestionnaire_Utilisateurs().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Gestionnaire_Utilisateurs().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Bouton_Rechercher;
-    private javax.swing.JButton Bouton_ajouter;
-    private javax.swing.JButton Bouton_fermer;
-    private javax.swing.JButton Bouton_supprimer;
-    private javax.swing.JTextField Entree_rechercher;
-    private javax.swing.JList<String> Liste_utilisateurs;
+    private javax.swing.JButton Bouton_retour;
+    private javax.swing.JButton Bouton_selectionner;
+    private javax.swing.JTextField Entree_utilisateur;
+    private javax.swing.JTextArea aff_users;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
+
+    private void afficher_liste() throws ClassNotFoundException, SQLException {
+        Commubdd comu = new Commubdd();
+        List<Utilisateur> liste_utilisateur = comu.getListUser();
+        String texte = "";
+        texte = liste_utilisateur.stream().map((user) -> user.getUser_name() + "\n").reduce(texte, String::concat);
+        aff_users.setText(texte);
+    }
 }
