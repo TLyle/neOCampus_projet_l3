@@ -157,7 +157,7 @@ public class Affichage_Ticket extends javax.swing.JFrame {
             Logger.getLogger(Affichage_Ticket.class.getName()).log(Level.SEVERE, null, ex);
         }
         afficher_les_messages();
-        aff_message.setText("");
+        Entree_message.setText("");
     }//GEN-LAST:event_Bouton_envoyerActionPerformed
 
     /**
