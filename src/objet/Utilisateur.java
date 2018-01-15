@@ -20,7 +20,6 @@ public class Utilisateur {
         public List<Ticket> getList() {
             return list;
         }
-	
         
         
 	public String getMail() {
@@ -58,10 +57,17 @@ public class Utilisateur {
 		return groupe;
 	}
 	
+        public boolean ticketExist(Ticket ticket){
+            boolean exist = false;
+            for(Ticket tick: list)
+                if(ticket.getIdTicket() == tick.getIdTicket())
+                    exist = true;
+            return exist;
+        }
+        
         public void addTicket(Ticket ticket){
-            if(list.contains(ticket))
-                list.remove(ticket);
-            list.add(ticket);
+            if(! ticketExist(ticket))
+                list.add(ticket);
         }
         
         public Ticket hasTicket(int id){

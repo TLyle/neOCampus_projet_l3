@@ -137,11 +137,20 @@ public class ToServer{// implements Runnable {
             List<Ticket> list_ticket;
             for(String grp: list_groupe){
                 list_ticket = bdd.getListTicket(user.getGroupe(), grp);
-                for(Ticket tick: list_ticket)
-                    user.addTicket(tick);
+                for(Ticket tick: list_ticket){
+                    if(user.ticketExist(tick))
+                        for(Message mess: user.hasTicket(tick.getIdTicket()).getMessage())
+                            user.hasTicket(tick.getIdTicket()).addMessage(mess);
+                    else
+                        user.addTicket(tick);    
+                }
                 list_ticket = bdd.getListTicket(grp, user.getGroupe());
                 for(Ticket tick: list_ticket)
-                    user.addTicket(tick);
+                    if(user.ticketExist(tick))
+                        for(Message mess: user.hasTicket(tick.getIdTicket()).getMessage())
+                            user.hasTicket(tick.getIdTicket()).addMessage(mess);
+                    else
+                        user.addTicket(tick); 
             }
         }
         

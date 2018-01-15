@@ -130,8 +130,8 @@ public class Commubdd {
             
             int idTicket = result.getInt(1);
             String titre = result.getObject(2).toString();
-            String groupeDestinataire = result.getObject(3).toString();
-            String groupeEmetteur = result.getObject(4).toString();
+            String groupeDestinataire = result.getObject(4).toString();
+            String groupeEmetteur = result.getObject(3).toString();
             tick = new Ticket(titre, groupeEmetteur, groupeDestinataire, idTicket);
             ajoutMessage(tick);
             
@@ -222,5 +222,13 @@ public class Commubdd {
                 }
             }
             return trouve;
+        }
+        
+        public void creationUtilisateur(String nom, String prenom, String username, String mdp, String mail, String categorie) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            try (Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); Statement state = conn.createStatement()) {
+                String commande = "insert into utilisateur values ('"+username+"', '"+mdp+"','"+categorie+"', NULL, '"+nom+"', '"+prenom+"', '"+mail+"')";
+                state.executeUpdate(commande);
+            }
         }
 }

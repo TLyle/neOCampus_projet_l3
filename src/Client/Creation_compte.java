@@ -5,10 +5,12 @@
  */
 package Client;
 
+import base_de_donnees.Commubdd;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +23,10 @@ public class Creation_compte extends javax.swing.JFrame {
     String password;
     String password_verif;
     String mail;
+    String nom;
+    String prenom;
+    String categorie;
+    Commubdd bdd = new Commubdd();
     /**
      * Creates new form Creation_compte
      */
@@ -50,7 +56,7 @@ public class Creation_compte extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Nom_utilisateur = new javax.swing.JLabel();
-        Entree_nom_utilisateur = new javax.swing.JTextField();
+        Nom = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -59,21 +65,27 @@ public class Creation_compte extends javax.swing.JFrame {
         Retour = new javax.swing.JButton();
         Entree_mdp_verification = new javax.swing.JPasswordField();
         Entree_mdp = new javax.swing.JPasswordField();
+        Entree_nom_utilisateur = new javax.swing.JTextField();
+        Prenom = new javax.swing.JTextField();
+        Nom_utilisateur1 = new javax.swing.JLabel();
+        Nom_utilisateur2 = new javax.swing.JLabel();
+        Categorie = new javax.swing.JComboBox<>();
+        Nom_utilisateur3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Nom_utilisateur.setText("Nom utilisateur :");
-        jPanel1.add(Nom_utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 90, 20));
+        Nom_utilisateur.setText("Categorie :");
+        jPanel1.add(Nom_utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 170, 90, 20));
 
-        Entree_nom_utilisateur.addActionListener(new java.awt.event.ActionListener() {
+        Nom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Entree_nom_utilisateurActionPerformed(evt);
+                NomActionPerformed(evt);
             }
         });
-        jPanel1.add(Entree_nom_utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 290, -1));
+        jPanel1.add(Nom, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 240, -1));
 
         jLabel1.setText("Mot de passe :");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
@@ -89,7 +101,7 @@ public class Creation_compte extends javax.swing.JFrame {
                 Entree_mailActionPerformed(evt);
             }
         });
-        jPanel1.add(Entree_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 290, -1));
+        jPanel1.add(Entree_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 240, -1));
 
         jButton1.setText("Création du compte");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -112,14 +124,45 @@ public class Creation_compte extends javax.swing.JFrame {
                 Entree_mdp_verificationActionPerformed(evt);
             }
         });
-        jPanel1.add(Entree_mdp_verification, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 290, -1));
+        jPanel1.add(Entree_mdp_verification, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 240, -1));
 
         Entree_mdp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Entree_mdpActionPerformed(evt);
             }
         });
-        jPanel1.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 290, -1));
+        jPanel1.add(Entree_mdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 240, -1));
+
+        Entree_nom_utilisateur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_nom_utilisateurActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Entree_nom_utilisateur, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 240, -1));
+
+        Prenom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PrenomActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Prenom, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 240, -1));
+
+        Nom_utilisateur1.setText("Nom utilisateur :");
+        jPanel1.add(Nom_utilisateur1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 90, 20));
+
+        Nom_utilisateur2.setText("Prenom :");
+        jPanel1.add(Nom_utilisateur2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 90, 20));
+
+        Categorie.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Etudiant", "Professeur", "Service technique" }));
+        Categorie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CategorieActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Categorie, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, 240, -1));
+
+        Nom_utilisateur3.setText("Nom :");
+        jPanel1.add(Nom_utilisateur3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 90, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,9 +184,9 @@ public class Creation_compte extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Entree_nom_utilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_nom_utilisateurActionPerformed
-        username = Entree_nom_utilisateur.getText();
-    }//GEN-LAST:event_Entree_nom_utilisateurActionPerformed
+    private void NomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NomActionPerformed
+        username = Nom.getText();
+    }//GEN-LAST:event_NomActionPerformed
 
     private void RetourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetourActionPerformed
         try {
@@ -154,7 +197,18 @@ public class Creation_compte extends javax.swing.JFrame {
         this.dispose(); // fermeture de la fenetre
     }//GEN-LAST:event_RetourActionPerformed
 
+    private void resetEntrer(){
+        mail = "";
+        password = "";
+        password_verif = "";
+        nom = "";
+        prenom = "";
+        username = "";
+        categorie = "";
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        resetEntrer();
         mail = Entree_mail.getText();
         char mdp[] = Entree_mdp.getPassword();
         for (char c : mdp)
@@ -163,14 +217,20 @@ public class Creation_compte extends javax.swing.JFrame {
         for (char c : mdp)
             password_verif+=c;
         username = Entree_nom_utilisateur.getText();
-        if(password != password_verif){
-            Entree_mail.setText("");
+        if(! password.equals(password_verif)){
             Entree_mdp.setText("");
             Entree_mdp_verification.setText("");
-            Entree_nom_utilisateur.setText("");
             new Affichage_erreur("Les mots de passe ne sont pas identiques").setVisible(true);
         }else{
-            //TODO créer le compte avec username, password et mail
+            mail = Entree_mail.getText();
+            prenom = Prenom.getText();
+            nom = Nom.getText();
+            categorie = Categorie.getToolTipText();
+            try {
+                bdd.creationUtilisateur(nom, prenom, username, password, mail, categorie);
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(Creation_compte.class.getName()).log(Level.SEVERE, null, ex);
+            }
             try {
             new Authentification().setVisible(true);
         } catch (IOException ex) {
@@ -195,6 +255,18 @@ public class Creation_compte extends javax.swing.JFrame {
         for (char c : mdp)
             password_verif +=c;
     }//GEN-LAST:event_Entree_mdp_verificationActionPerformed
+
+    private void Entree_nom_utilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_nom_utilisateurActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Entree_nom_utilisateurActionPerformed
+
+    private void PrenomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrenomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PrenomActionPerformed
+
+    private void CategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategorieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CategorieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,11 +304,17 @@ public class Creation_compte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> Categorie;
     private javax.swing.JTextField Entree_mail;
     private javax.swing.JPasswordField Entree_mdp;
     private javax.swing.JPasswordField Entree_mdp_verification;
     private javax.swing.JTextField Entree_nom_utilisateur;
+    private javax.swing.JTextField Nom;
     private javax.swing.JLabel Nom_utilisateur;
+    private javax.swing.JLabel Nom_utilisateur1;
+    private javax.swing.JLabel Nom_utilisateur2;
+    private javax.swing.JLabel Nom_utilisateur3;
+    private javax.swing.JTextField Prenom;
     private javax.swing.JButton Retour;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

@@ -50,6 +50,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         lui.rafraichir2(moi);
         Donnees_utilisateur.setText(moi.toString());
         try {
+            lui.rafraichir2(moi);
             arbreTicket();
         } catch (SQLException ex) {
             Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,7 +239,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         
         // ici je rempli l_groupe
         if(etud){
-            root = new DefaultMutableTreeNode("Etudiant");
+            root = new DefaultMutableTreeNode("Service technique");
             l_groupe = bdd.getListGrp("technique");
         }else{
             root = new DefaultMutableTreeNode("Service Technique");
@@ -275,7 +276,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
                 String nom_ticket;
                 if(arbre_tickets.getPathForLocation(e.getX(),e.getY()) != null){
                     nom_ticket = arbre_tickets.getPathForLocation(e.getX(),e.getY()).getLastPathComponent().toString();
-                    new Affichage_Ticket((moi.trouverTicketNom(nom_ticket))).setVisible(true);
+                    new Affichage_Ticket((moi.trouverTicketNom(nom_ticket)), moi, socket).setVisible(true);
                 }
             }
 

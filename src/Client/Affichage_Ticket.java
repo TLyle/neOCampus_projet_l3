@@ -8,10 +8,15 @@ package Client;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JList;
 import objet.Message;
 import objet.Ticket;
+import objet.Utilisateur;
 
 /**
  *
@@ -19,13 +24,17 @@ import objet.Ticket;
  */
 public class Affichage_Ticket extends javax.swing.JFrame {
     static Ticket ticket_courant;
+    static Utilisateur user;
+    static Socket socket;
     /**
      * Creates new form Affichage_Ticket
      * @param un_ticket
      */
-    public Affichage_Ticket(Ticket un_ticket) {
+    public Affichage_Ticket(Ticket un_ticket, Utilisateur user, Socket socket) {
         initComponents();
-        Affichage_Ticket.ticket_courant = un_ticket;
+        this.user = user;
+        this.socket = socket;
+        this.ticket_courant = un_ticket;
         afficher_les_messages();
     }
     
@@ -63,6 +72,8 @@ public class Affichage_Ticket extends javax.swing.JFrame {
         Bouton_envoyer = new javax.swing.JButton();
         Entree_message = new java.awt.TextArea();
         Conteneur_liste = new javax.swing.JPanel();
+        list_message = new javax.swing.JScrollPane();
+        aff_message = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -94,6 +105,17 @@ public class Affichage_Ticket extends javax.swing.JFrame {
         Conteneur_liste.setBackground(new java.awt.Color(0, 204, 153));
         Conteneur_liste.setPreferredSize(taillePanelListe());
         Conteneur_liste.setLayout(new java.awt.BorderLayout());
+
+        list_message.setBorder(null);
+
+        aff_message.setEditable(false);
+        aff_message.setColumns(20);
+        aff_message.setRows(5);
+        list_message.setViewportView(aff_message);
+
+        Conteneur_liste.add(list_message, java.awt.BorderLayout.CENTER);
+        list_message.getAccessibleContext().setAccessibleDescription("");
+
         jPanel1.add(Conteneur_liste, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,12 +148,16 @@ public class Affichage_Ticket extends javax.swing.JFrame {
 
     private void Bouton_envoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_envoyerActionPerformed
         String message_envoie = Entree_message.getText();
-        //TODO envoyer le message a la BDD
-        // ****
-        
-        // ****
-        // ci-dessous j'actualise la liste
+        ToServer ts;
+        try {
+            ts = new ToServer(socket);
+            ts.envoieMessage(message_envoie, user, ticket_courant.getIdTicket());
+            ticket_courant.addMessage(new Message(user.getUser_name(), "recu", message_envoie));
+        } catch (IOException ex) {
+            Logger.getLogger(Affichage_Ticket.class.getName()).log(Level.SEVERE, null, ex);
+        }
         afficher_les_messages();
+        aff_message.setText("");
     }//GEN-LAST:event_Bouton_envoyerActionPerformed
 
     /**
@@ -163,7 +189,7 @@ public class Affichage_Ticket extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new Affichage_Ticket(ticket_courant).setVisible(true);
+            new Affichage_Ticket(ticket_courant, user, socket).setVisible(true);
         });
     }
 
@@ -173,22 +199,28 @@ public class Affichage_Ticket extends javax.swing.JFrame {
     private javax.swing.JPanel Conteneur_entree;
     private javax.swing.JPanel Conteneur_liste;
     private java.awt.TextArea Entree_message;
+    private javax.swing.JTextArea aff_message;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane list_message;
     // End of variables declaration//GEN-END:variables
 
     private void afficher_les_messages() {
-        //TODO recuperer les messages
         List<Message> liste_message = ticket_courant.getMessage();
-        String[] tab_messages_brut = {""};
+        String texte = "";
+        for(Message mess: liste_message){
+            texte += mess.getExpediteur()+ " : "+mess.getTexte()+"\n";
+        }
+        aff_message.setText(texte);
+        /*String[] tab_messages_brut = {""};
         int incr = 0;
         for (Message message : liste_message) {
             tab_messages_brut[incr] = message.getTexte();
             incr++;
         }
-        JList<String> Liste_messages = new JList<>(tab_messages_brut);
+        /*JList<String> Liste_messages = new JList<>(tab_messages_brut);
         Conteneur_liste.removeAll();
         Conteneur_liste.add(Liste_messages);
         Liste_messages.setVisible(true);
-        Conteneur_liste.updateUI();
+        Conteneur_liste.updateUI();*/
     }
 }
