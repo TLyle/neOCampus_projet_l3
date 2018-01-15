@@ -157,7 +157,7 @@ public class Creation_Ticket extends javax.swing.JFrame {
     }//GEN-LAST:event_Bouton_retourActionPerformed
 
     private void Bouton_envoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_envoyerActionPerformed
-        titre = "";
+        titre =  "";
         message = "";
         groupe = "Electricien";
         titre = Saisie_titre.getText();

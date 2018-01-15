@@ -1,7 +1,10 @@
 package Client;
 
+import base_de_donnees.Commubdd;
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objet.Message;
@@ -55,9 +58,7 @@ public class ToServer implements Runnable {
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
-            out.println("\\/ message \\/");
-            out.flush();
-            String fin = in.readLine();
+            String fin = "non";
             while(! fin.equals("fin")){
                 out.println("pret");
                 out.flush();
@@ -67,23 +68,23 @@ public class ToServer implements Runnable {
                 ticket.addMessage(new Message(expediteur, etat, texte));
                 fin = in.readLine();
             }
+            user.addTicket(ticket);
         }
         
         public void receptionDuTickets(Utilisateur user) throws IOException{
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        
-            out.println("\\/ ticket \\/");
-            out.flush();
+            
             out.println("pret");
             out.flush();
             String groupeD = in.readLine();
             String titre = in.readLine();
             String groupeE = in.readLine();
             int idTicket = Integer.parseInt(in.readLine());
+            
             Ticket tick = new Ticket(titre, groupeE, groupeE, idTicket);
+            receptionDesMessages(user, tick);           
             user.addTicket(tick);
-            receptionDesMessages(user, tick);
         }
         
         public void rafraichir(Utilisateur user) throws IOException{
@@ -104,11 +105,42 @@ public class ToServer implements Runnable {
                 idAChercher = Integer.parseInt(in.readLine());
                 Ticket tickTrouve = user.hasTicket(idAChercher);
                 if(tickTrouve == null){
+                    out.println("trouve");
+                    out.flush();
                     receptionDuTickets(user);
                 }else{
+                    out.println("pas trouve");
+                    out.flush();
                     receptionDesMessages(user, tickTrouve);
                 }
+                ok = in.readLine();
             }
+        }
+        
+        public void rafraichir2(Utilisateur user) throws ClassNotFoundException, SQLException{
+            Commubdd bdd = new Commubdd();
+            List<String> list_groupe;
+            if(user.getType().equals("etudiant"))
+                list_groupe = bdd.getListGrp("technique");
+            else
+                list_groupe = bdd.getListGrp("etude");
+            List<Ticket> list_ticket;
+            for(String grp: list_groupe){
+                list_ticket = bdd.getListTicket(user.getGroupe(), grp);
+                for(Ticket tick: list_ticket){
+                    List<Message> list_mess = bdd.getListMessage(tick.getIdTicket());
+                    for(Message mess: list_mess){
+                        tick.addMessage(mess);
+                    }
+                }
+                list_ticket = bdd.getListTicket(grp, user.getGroupe());
+                for(Ticket tick: list_ticket){
+                    List<Message> list_mess = bdd.getListMessage(tick.getIdTicket());
+                    for(Message mess: list_mess){
+                        tick.addMessage(mess);
+                    }
+                }
+            }             
         }
         
         public boolean envoieMessage(String message, Utilisateur user, int idTicket) throws IOException{

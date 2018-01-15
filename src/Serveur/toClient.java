@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import objet.Message;
 import objet.Ticket;
@@ -83,8 +84,6 @@ public class toClient implements Runnable {
             out = new PrintWriter(socket.getOutputStream());
             
             List<Message> l_message = bdd.getListMessage(id);
-            out.println("debut");
-            out.flush();
             for(int i=0; i <l_message.size(); i++){
                 Message mess = l_message.get(i);
                 if(in.readLine().equals("pret")){
@@ -94,10 +93,10 @@ public class toClient implements Runnable {
                     out.flush();
                     out.println(mess.getTexte());
                     out.flush();
-                    if(i <l_message.size())
-                        out.println("continu");
-                    else
+                    if(i == l_message.size())
                         out.println("fin");
+                    else
+                        out.println("continu");
                     out.flush();
                 }
             }           
@@ -117,8 +116,7 @@ public class toClient implements Runnable {
                 out.println(Integer.toString(tick.getIdTicket()));
                 out.flush();
             }
-            if(in.readLine().equals("\\/ message \\/"))
-                envoieListeMessage(tick.getIdTicket());
+            envoieListeMessage(tick.getIdTicket());
         }
         
         public void receptionRafraichir() throws IOException, ClassNotFoundException, SQLException{
@@ -134,20 +132,29 @@ public class toClient implements Runnable {
                 list = bdd.getListGrp("technique");
             else
                 list = bdd.getListGrp("etude");
-            List<Ticket> l_ticket; 
-            for(String grp : list){
-                l_ticket = bdd.getListTicket(groupe, grp);
-                for(Ticket tick : l_ticket){
-                    int id = tick.getIdTicket();
-                    out.println(Integer.toString(id));
-                    out.flush();
-                    if(in.readLine().equals("\\/ message \\/")){
-                        envoieListeMessage(id);
-                    } else {
-                        envoieTicket(tick);
-                    }
-                }
+            List<Ticket> temp, l_ticket = new LinkedList<>(); 
+            for(int i=0;i<list.size();i++){
+                temp = bdd.getListTicket(groupe, list.get(i));
+                for(Ticket tick: temp)
+                    l_ticket.add(tick);
             }
+            for(int i=0; i<l_ticket.size(); i++){
+                int id = l_ticket.get(i).getIdTicket();
+                out.println(Integer.toString(id));
+                out.flush();
+                if(in.readLine().equals("trouve")){
+                    envoieListeMessage(id);
+                } else {
+                    envoieTicket(l_ticket.get(i));
+                }
+                if(i < list.size())
+                    out.println("continu");
+                else
+                    out.println("fin");
+                out.flush();
+            }
+
+            System.out.println("ici");
         }
         
         public boolean attenteOrdre() throws IOException, SQLException, ClassNotFoundException{

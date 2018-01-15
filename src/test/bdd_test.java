@@ -27,5 +27,6 @@ public class bdd_test {
                 bdd.creationTicketBdd(bdd.newIdTicket(), "test", "TDA2", "Electricien");
                 bdd.creationMessageBdd(5, "ceci est un test", util.getUser_name());
                 System.out.println(bdd.getListMessage(1));
+                System.out.println(bdd.grpExiste("TDA2"));
         }
 }
