@@ -8,18 +8,25 @@ package Client;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.util.List;
+import javax.swing.JList;
+import objet.Message;
+import objet.Ticket;
 
 /**
  *
  * @author jules
  */
 public class Affichage_Ticket extends javax.swing.JFrame {
-
+    static Ticket ticket_courant;
     /**
      * Creates new form Affichage_Ticket
+     * @param un_ticket
      */
-    public Affichage_Ticket() {
+    public Affichage_Ticket(Ticket un_ticket) {
         initComponents();
+        Affichage_Ticket.ticket_courant = un_ticket;
+        afficher_les_messages();
     }
     
     private Dimension tailleEcranAdapté(){
@@ -31,22 +38,13 @@ public class Affichage_Ticket extends javax.swing.JFrame {
         Dimension dim = new Dimension((int)rectangle.getWidth(),(int)rectangle.getHeight());
         return dim;
     }
-    private Dimension tailleEcranTicket(){
+    private Dimension taillePanelListe(){
         //get local graphics environment
         GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
         //get maximum window bounds
         Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
         //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension dim = new Dimension( ((int)rectangle.getWidth()) * 1 / 3,(int)rectangle.getHeight());
-        return dim;
-    }
-    private Dimension tailleEcranProfil(){
-        //get local graphics environment
-        GraphicsEnvironment graphicsEnvironment =GraphicsEnvironment.getLocalGraphicsEnvironment();
-        //get maximum window bounds
-        Rectangle rectangle =graphicsEnvironment.getMaximumWindowBounds();
-        //Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension dim = new Dimension( ((int)rectangle.getWidth()) * 2 / 3,(int)rectangle.getHeight());
+        Dimension dim = new Dimension( ((int)rectangle.getWidth()) * 2/3 , ((int)rectangle.getHeight()) * 2/3);
         return dim;
     }
 
@@ -59,60 +57,82 @@ public class Affichage_Ticket extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Bouton_fermer = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        Conteneur_entree = new javax.swing.JPanel();
+        Bouton_envoyer = new javax.swing.JButton();
+        Entree_message = new java.awt.TextArea();
+        Conteneur_liste = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(tailleEcranAdapté());
         setPreferredSize(tailleEcranAdapté());
 
-        jPanel1.setBackground(new java.awt.Color(102, 255, 102));
-        jPanel1.setMaximumSize(tailleEcranProfil());
-        jPanel1.setPreferredSize(tailleEcranProfil());
+        Bouton_fermer.setText("Fermer");
+        Bouton_fermer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_fermerActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 853, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(102, 102, 255));
-        jPanel2.setMaximumSize(tailleEcranTicket());
-        jPanel2.setPreferredSize(tailleEcranTicket());
+        Conteneur_entree.setBackground(new java.awt.Color(102, 204, 0));
+        Conteneur_entree.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
-        );
+        Bouton_envoyer.setText("Envoyer");
+        Bouton_envoyer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_envoyerActionPerformed(evt);
+            }
+        });
+        Conteneur_entree.add(Bouton_envoyer, java.awt.BorderLayout.PAGE_END);
+        Conteneur_entree.add(Entree_message, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(Conteneur_entree, java.awt.BorderLayout.CENTER);
+
+        Conteneur_liste.setBackground(new java.awt.Color(0, 204, 153));
+        Conteneur_liste.setPreferredSize(taillePanelListe());
+        Conteneur_liste.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(Conteneur_liste, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Bouton_fermer)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Bouton_fermer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Bouton_fermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_fermerActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_Bouton_fermerActionPerformed
+
+    private void Bouton_envoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_envoyerActionPerformed
+        String message_envoie = Entree_message.getText();
+        //TODO envoyer le message a la BDD
+        // ****
+        
+        // ****
+        // ci-dessous j'actualise la liste
+        afficher_les_messages();
+    }//GEN-LAST:event_Bouton_envoyerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -142,15 +162,33 @@ public class Affichage_Ticket extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Affichage_Ticket().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Affichage_Ticket(ticket_courant).setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Bouton_envoyer;
+    private javax.swing.JButton Bouton_fermer;
+    private javax.swing.JPanel Conteneur_entree;
+    private javax.swing.JPanel Conteneur_liste;
+    private java.awt.TextArea Entree_message;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
+    private void afficher_les_messages() {
+        //TODO recuperer les messages
+        List<Message> liste_message = ticket_courant.getMessage();
+        String[] tab_messages_brut = {""};
+        int incr = 0;
+        for (Message message : liste_message) {
+            tab_messages_brut[incr] = message.getTexte();
+            incr++;
+        }
+        JList<String> Liste_messages = new JList<>(tab_messages_brut);
+        Conteneur_liste.removeAll();
+        Conteneur_liste.add(Liste_messages);
+        Liste_messages.setVisible(true);
+        Conteneur_liste.updateUI();
+    }
 }

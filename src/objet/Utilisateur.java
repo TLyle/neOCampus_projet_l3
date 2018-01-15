@@ -83,6 +83,14 @@ public class Utilisateur {
 		return("Nom "+nom+"\nPrenom "+prenom+"\nmail "+mail+"\nuser_name "+user_name+"\ngroupe "+groupe+"\ntype "+type);
 	}
         
+        public Ticket trouverTicketNom(String nom){
+            for(Ticket tick: list){
+                if(tick.getTitre().equals(nom))
+                    return tick;
+            }
+            return null;
+        }
+        
         public void affichageTicket(){
             for(Ticket tick: list){
                 System.out.println(tick);

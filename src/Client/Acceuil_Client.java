@@ -11,6 +11,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -38,6 +40,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
      * @param s
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
     public Acceuil_Client(Socket s) throws IOException, ClassNotFoundException, SQLException {
         initComponents();
@@ -90,7 +93,6 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
         jPanel_Ticket = new javax.swing.JPanel();
         Conteneur_boutons_ticket = new javax.swing.JPanel();
-        Bouton_recherche = new javax.swing.JButton();
         Bouton_actualiser = new javax.swing.JButton();
         Bouton_creer_ticket = new javax.swing.JButton();
         Conteneur_Tickets = new javax.swing.JPanel();
@@ -100,7 +102,6 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         Donnees_utilisateur = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         Bouton_deconnection = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(tailleEcranAdapté());
@@ -112,14 +113,6 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         Conteneur_boutons_ticket.setBackground(new java.awt.Color(0, 153, 153));
         Conteneur_boutons_ticket.setPreferredSize(new java.awt.Dimension(601, 135));
         Conteneur_boutons_ticket.setLayout(new java.awt.GridLayout(1, 0));
-
-        Bouton_recherche.setText("Rechercher");
-        Bouton_recherche.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bouton_rechercheActionPerformed(evt);
-            }
-        });
-        Conteneur_boutons_ticket.add(Bouton_recherche);
 
         Bouton_actualiser.setText("Actualiser");
         Bouton_actualiser.addActionListener(new java.awt.event.ActionListener() {
@@ -185,17 +178,6 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         });
         jPanel3.add(Bouton_deconnection, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout jPanel_ProfilLayout = new javax.swing.GroupLayout(jPanel_Profil);
         jPanel_Profil.setLayout(jPanel_ProfilLayout);
         jPanel_ProfilLayout.setHorizontalGroup(
@@ -206,11 +188,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_ProfilLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel_informations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_ProfilLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jPanel_informations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel_ProfilLayout.setVerticalGroup(
@@ -218,9 +196,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_ProfilLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
                 .addComponent(jPanel_informations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -229,10 +205,6 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void Bouton_rechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_rechercheActionPerformed
-        
-    }//GEN-LAST:event_Bouton_rechercheActionPerformed
 
     private void Bouton_deconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_deconnectionActionPerformed
         try {
@@ -250,9 +222,7 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
             lui.rafraichir2(moi);
             //moi.affichageTicket();
             arbreTicket();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
         }       
     }//GEN-LAST:event_Bouton_actualiserActionPerformed
@@ -275,29 +245,56 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
             l_groupe = bdd.getListGrp("etude");
         }
         
-        for (String grp : l_groupe) {
+        l_groupe.stream().map((String grp) -> {
             DefaultMutableTreeNode fils = new DefaultMutableTreeNode(grp);
-            for (Ticket ticket : l_ticket) {
+            l_ticket.forEach((Ticket ticket) -> {
                 if(ticket.getGroupeEmetteur().equals(grp) && ticket.getGroupeDestinataire().equals(moi.getGroupe())){
                     DefaultMutableTreeNode ticket_fils = new DefaultMutableTreeNode(ticket.getTitre());
                     fils.add(ticket_fils);
                 }else{
                     if(ticket.getGroupeEmetteur().equals(moi.getGroupe()) && ticket.getGroupeDestinataire().equals(grp)){
                         DefaultMutableTreeNode ticket_fils = new DefaultMutableTreeNode(ticket.getTitre());
-                    fils.add(ticket_fils);
+                        fils.add(ticket_fils);
                     }
                 }
-                
-            }
+            });
+            return fils;
+        }).forEachOrdered((fils) -> {
             root.add(fils);
-            
-        }
+        });
         
         Conteneur_Tickets.removeAll();
         JTree arbre_tickets= new JTree(root); 
         Conteneur_Tickets.add(arbre_tickets);
         arbre_tickets.setRootVisible(true);
         arbre_tickets.setShowsRootHandles(true);
+        
+        arbre_tickets.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String nom_ticket;
+                if(arbre_tickets.getPathForLocation(e.getX(),e.getY()) != null){
+                    nom_ticket = arbre_tickets.getPathForLocation(e.getX(),e.getY()).getLastPathComponent().toString();
+                    new Affichage_Ticket((moi.trouverTicketNom(nom_ticket))).setVisible(true);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
         Conteneur_Tickets.updateUI();
     }
     
@@ -351,11 +348,9 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     private javax.swing.JButton Bouton_actualiser;
     private javax.swing.JButton Bouton_creer_ticket;
     private javax.swing.JButton Bouton_deconnection;
-    private javax.swing.JButton Bouton_recherche;
     private javax.swing.JPanel Conteneur_Tickets;
     private javax.swing.JPanel Conteneur_boutons_ticket;
     private javax.swing.JTextArea Donnees_utilisateur;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_Profil;
     private javax.swing.JPanel jPanel_Ticket;
@@ -363,11 +358,10 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
+    
+    //TODO supprimer cette action au profit de celle dans le JTree
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println(e.getActionCommand());
-        new Affichage_Ticket().setVisible(true);
-        //this.dispose();
     }
 
     private DefaultMutableTreeNode getLeafNamed(DefaultMutableTreeNode root, String dest) {
