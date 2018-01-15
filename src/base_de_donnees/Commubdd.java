@@ -231,4 +231,22 @@ public class Commubdd {
                 state.executeUpdate(commande);
             }
         }
+        
+        public void updateUtilisateur(String nom, String prenom, String username, String mdp, String mail, String categorie, String groupe) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            try (Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); Statement state = conn.createStatement()) {
+                String commande = "update utilisateur set Mdp = '"+mdp+"', Categorie = '"+categorie+"', Groupe = '"+groupe+"', Nom = '"+nom+"', Prenom = '"+prenom+"', Mail = '"+mail+"' where Username = '"+username+"';";
+                
+                state.executeUpdate(commande);
+            }
+        }
+        
+        public void creerGroupe(String nom, String categorie) throws ClassNotFoundException, SQLException{
+            Class.forName(driver);
+            try (Connection conn = DriverManager.getConnection(url, ident_user, ident_mdp); Statement state = conn.createStatement()) {
+                String commande = "insert into groupe values ('"+nom+"', '"+categorie+"')";
+                
+                state.executeUpdate(commande);
+            }
+        }
 }

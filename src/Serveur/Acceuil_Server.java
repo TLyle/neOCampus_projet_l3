@@ -100,6 +100,11 @@ public class Acceuil_Server extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         Bouton_groupes.setText("Groupes");
+        Bouton_groupes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bouton_groupesActionPerformed(evt);
+            }
+        });
         jPanel2.add(Bouton_groupes, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBackground(new java.awt.Color(204, 255, 102));
@@ -140,6 +145,10 @@ public class Acceuil_Server extends javax.swing.JFrame {
     private void Bouton_utilisateursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_utilisateursActionPerformed
         new Gestionnaire_Utilisateurs().setVisible(true);
     }//GEN-LAST:event_Bouton_utilisateursActionPerformed
+
+    private void Bouton_groupesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_groupesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Bouton_groupesActionPerformed
 
     /**
      * @param args the command line arguments
