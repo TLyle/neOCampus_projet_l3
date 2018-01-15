@@ -89,6 +89,12 @@ public class Creer_ticket extends javax.swing.JFrame {
             }
         });
 
+        Entree_groupe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Entree_groupeActionPerformed(evt);
+            }
+        });
+
         Bouton_groupes.setText("Groupes");
         Bouton_groupes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +176,8 @@ public class Creer_ticket extends javax.swing.JFrame {
     private void Bouton_envoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_envoyerActionPerformed
         titre =  "";
         message = "";
-        groupe = "Electricien";
+        groupe = "";
+        groupe = Entree_groupe.getText();
         titre = Entree_titre.getText();
         message = Entree_texte.getText();       
         try {
@@ -194,6 +201,10 @@ public class Creer_ticket extends javax.swing.JFrame {
     private void Bouton_groupesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_groupesActionPerformed
         new Liste_groupe().setVisible(true);
     }//GEN-LAST:event_Bouton_groupesActionPerformed
+
+    private void Entree_groupeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Entree_groupeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Entree_groupeActionPerformed
 
     /**
      * @param args the command line arguments

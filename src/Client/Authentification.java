@@ -67,6 +67,7 @@ public class Authentification extends javax.swing.JFrame {
         Bouton_valider_ip = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(tailleEcranAdapté());
 
         Conteneur_central.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

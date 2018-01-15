@@ -15,12 +15,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import objet.Ticket;
 import objet.Utilisateur;
 
 /**
@@ -33,14 +35,16 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     ToServer lui;
     /**
      * Creates new form Acceuil_Client
+     * @param s
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
-    ArrayList<Integer> listeDeTickets; //TODO remplacer Integer par Ticket
-    
-    public Acceuil_Client(Socket s) throws IOException, ClassNotFoundException {
+    public Acceuil_Client(Socket s) throws IOException, ClassNotFoundException, SQLException {
         initComponents();
         socket = s;
         lui = new ToServer(socket);
         moi = lui.receptionUser();
+        lui.rafraichir2(moi);
         Donnees_utilisateur.setText(moi.toString());
         try {
             arbreTicket();
@@ -243,21 +247,8 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
 
     private void Bouton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_actualiserActionPerformed
         try {
-            /*//Conteneur_Tickets = new JPanel(new GridLayout(0, 1));
-            for(int i = 0; i<10; i++) {
-            JPanel p = new JPanel(new FlowLayout());
-            JButton b;
-            b = new JButton("Acceder a la conversation "+((Integer) i).toString());
-            b.addActionListener(this);
-            
-            p.add(b);
-            p.add(new JLabel("Titre de conversation "+((Integer) i).toString()));
-            
-            Conteneur_Tickets.add(p);
-            }
-            Conteneur_Tickets.updateUI(); // rafraichi le panel*/
             lui.rafraichir2(moi);
-            moi.affichageTicket();
+            //moi.affichageTicket();
             arbreTicket();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -269,86 +260,40 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     private void arbreTicket() throws ClassNotFoundException, SQLException{
         DefaultMutableTreeNode root;
         List<String> l_groupe;
+        List<DefaultMutableTreeNode> l_tree = new LinkedList<>();
+        List<Ticket> l_ticket = moi.getList();
+        
         Commubdd bdd = new Commubdd();
         boolean etud = moi.getType().equals("etudiant");
+        
+        // ici je rempli l_groupe
         if(etud){
             root = new DefaultMutableTreeNode("Etudiant");
             l_groupe = bdd.getListGrp("technique");
         }else{
-            root = new DefaultMutableTreeNode("Service technique");
+            root = new DefaultMutableTreeNode("Service Technique");
             l_groupe = bdd.getListGrp("etude");
         }
-        boolean pasDeFeuille = true;
-        DefaultMutableTreeNode feuilleCourante;
-        for(String nomGroupe : l_groupe){
-            root.add(new DefaultMutableTreeNode(nomGroupe));
-            if(pasDeFeuille)
-                feuilleCourante = root.getFirstLeaf();
-            else
-                feuilleCourante = root.getNextLeaf();
-        }
-        JTree arbre_tickets= new JTree(root); 
-        Conteneur_Tickets.add(arbre_tickets);
-        arbre_tickets.setRootVisible(true);
-        arbre_tickets.setShowsRootHandles(true);
-        Conteneur_Tickets.updateUI();
-    }
-    
-    private void affichageArbreTicket(){
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-        DefaultMutableTreeNode professeur = new DefaultMutableTreeNode("Professeur");
-        DefaultMutableTreeNode etudiant = new DefaultMutableTreeNode("Etudiant");
-        DefaultMutableTreeNode service_Technique = new DefaultMutableTreeNode("Service technique");
-        DefaultMutableTreeNode administrateur = new DefaultMutableTreeNode("Administrateur");
-        root.add(etudiant);
-        root.add(professeur);
-        root.add(service_Technique);
-        root.add(administrateur);
-        Commubdd commubdd = new Commubdd();
-        boolean pasDeFeuille = true;
-        DefaultMutableTreeNode feuilleCourante; // = TDA(x)
-        try {
-            List<String> listGrp = commubdd.getListGrp("etude");
-            for(String nomGroupe : listGrp){
-                etudiant.add(new DefaultMutableTreeNode(nomGroupe));
-                if(pasDeFeuille)
-                    feuilleCourante = etudiant.getFirstLeaf();
-                else
-                    feuilleCourante = etudiant.getNextLeaf();
-                if(!moi.getGroupe().equals(nomGroupe)){
-                    try {
-                        List<String> listTickets = commubdd.getListTicket(moi.getGroupe(), nomGroupe);
-                        for (String nomTicket : listTickets) {
-                            feuilleCourante.add(new DefaultMutableTreeNode(nomTicket));
-                        }
-                    } catch (ClassNotFoundException | SQLException ex) {
-                        Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        
+        for (String grp : l_groupe) {
+            DefaultMutableTreeNode fils = new DefaultMutableTreeNode(grp);
+            for (Ticket ticket : l_ticket) {
+                if(ticket.getGroupeEmetteur().equals(grp) && ticket.getGroupeDestinataire().equals(moi.getGroupe())){
+                    DefaultMutableTreeNode ticket_fils = new DefaultMutableTreeNode(ticket.getTitre());
+                    fils.add(ticket_fils);
                 }else{
-                    listGrp.forEach((String nomGroupe2) ->{
-                        try {
-                            List<String> listTickets = commubdd.getListTicket(moi.getGroupe(), nomGroupe2);
-                            
-                        } catch (ClassNotFoundException | SQLException ex) {
-                            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    });
+                    if(ticket.getGroupeEmetteur().equals(moi.getGroupe()) && ticket.getGroupeDestinataire().equals(grp)){
+                        DefaultMutableTreeNode ticket_fils = new DefaultMutableTreeNode(ticket.getTitre());
+                    fils.add(ticket_fils);
+                    }
                 }
+                
             }
-            //feuilleCourante = feuilleCourante.getNextLeaf();
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            List<String> listGrp = commubdd.getListGrp("technique");
-            listGrp.forEach((nom) -> {
-                service_Technique.add(new DefaultMutableTreeNode(nom));
-            });
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+            root.add(fils);
+            
         }
         
-        
+        Conteneur_Tickets.removeAll();
         JTree arbre_tickets= new JTree(root); 
         Conteneur_Tickets.add(arbre_tickets);
         arbre_tickets.setRootVisible(true);
@@ -358,7 +303,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
     
     private void Bouton_creer_ticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bouton_creer_ticketActionPerformed
         new Creer_ticket(socket, moi).setVisible(true);
-        affichageArbreTicket();
+        try {
+            arbreTicket();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Bouton_creer_ticketActionPerformed
 
     /**
@@ -389,15 +338,11 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Acceuil_Client(socket).setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new Acceuil_Client(socket).setVisible(true);
+            } catch (IOException | ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(Acceuil_Client.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
@@ -423,6 +368,19 @@ public class Acceuil_Client extends javax.swing.JFrame implements ActionListener
         //System.out.println(e.getActionCommand());
         new Affichage_Ticket().setVisible(true);
         //this.dispose();
+    }
+
+    private DefaultMutableTreeNode getLeafNamed(DefaultMutableTreeNode root, String dest) {
+        DefaultMutableTreeNode iter = root.getFirstLeaf();
+        for(int i =0; i < root.getChildCount(); i++){
+            if(iter.toString().equals(dest)){
+                //System.out.println("J'ai trouvé"+iter.toString());
+                return iter;
+            }else{
+                iter.getNextLeaf();
+            }
+        }
+        return null;
     }
 
 }

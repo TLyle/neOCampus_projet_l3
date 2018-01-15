@@ -16,7 +16,13 @@ public class Utilisateur {
 		this.type = type;
 		this.groupe = groupe;
 	}
+
+        public List<Ticket> getList() {
+            return list;
+        }
 	
+        
+        
 	public String getMail() {
 		return mail;
 	}
